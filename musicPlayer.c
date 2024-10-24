@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h> //sleep
-#include <stdbool.h> //Validar cpf e retornar true ou false (ai mais é inutil sla o que) tmj👍🏾
-
+#include <unistd.h> // sleep
+#include <stdbool.h> // Validar cpf e retornar true ou false (ai mais é inutil sla o que) tmj👍🏾
+#include <conio.h> // Usar o getch() para pegar a resposta do user sem ter que dar enter, viadagem? Sim👍🏾
+  
 void cabecalho() {
     printf("\033[H\033[J");
     printf("==============================================================================================================\n");
@@ -32,7 +33,22 @@ void cabecalho() {
     printf("|    |_____|       |__||__,__|_| |_||___|___/                           '----------------'                   |\n");
     usleep(100000);
     printf("==============================================================================================================\n");
-    usleep(100000);  
+    usleep(200000);  
+}
+
+void escolhas1(){
+    printf("|                                                                                                            |\n");
+    printf("|   [1] Login                                                                                                |\n");
+    printf("|                                                                                                            |\n");
+    printf("|   [2] Criar Conta                                                                                          |\n");
+    printf("|                                                                                                            |\n");
+    printf("|   [3] Entrar como convidado                                                                                |\n");
+    printf("|                                                                                                            |\n");
+    printf("|   [4] Sobre o aplicativo                                                                                   |\n");
+    printf("|                                                                                                            |\n");
+    printf("|   [5] Sair                                                                                                 |\n");
+    printf("|                                                                                                            |\n");
+    printf("==============================================================================================================\n");
 }
 
 bool validaCPF(char *cpf) {
@@ -89,22 +105,46 @@ bool validaCPF(char *cpf) {
 
 int main() {
     cabecalho();
+    escolhas1();
 
     char *cpf;
     int tamanho = 11;
     bool cpfV;
+    char opcao;
 
-    cpf = (char *) calloc(tamanho + 1, sizeof(char));
+    opcao = getch(); // Pegando resposta do user sem precisar dar enter
 
-    if (cpf == NULL) {
-        printf("Erro na alocação de memória!!!!");
-        return 1;
+    switch(opcao) {
+        case '1':
+            //Depois isso aqui vai pra dentro de cadastro de usuario, calma ae paizao
+
+            cpf = (char *) calloc(tamanho + 1, sizeof(char));
+
+            if (cpf == NULL) {
+                printf("Erro na alocação de memória!!!!");
+                return 1;
+            }
+
+            printf("CPF (somente numeros): ");
+            scanf("%11s", cpf); //biriri para ler no maximo 11 chars
+            break;
+        case '2':
+            printf("teste num2 ");
+            break;
+        case '3':
+            printf("teste num2 ");
+            break;
+        case '4':
+            printf("teste num2 ");
+            break;
+        case '5':
+            printf("teste num2 ");
+            break;
+        default:
+            printf("Voce digitou um numero errado!");
+            break;
+
     }
-
-    //Depois isso aqui vai pra dentro de cadastro de usuario, calma ae paizao
-
-    printf("CPF (somente numeros): ");
-    scanf("%11s", cpf); //biriri para ler no maximo 11 chars
 
     cpfV = validaCPF(cpf);
 
