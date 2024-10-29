@@ -133,20 +133,26 @@ bool criarConta(User **vet, int *quantidade, int *capacidade){
     
     printf("E-mail: ");
     scanf("%s", (*vet)[*quantidade].email);
+
+    getchar();
+
     printf("Nome completo: ");
-    scanf("%s", (*vet)[*quantidade].nome);
+    fgets((*vet)[*quantidade].nome, 100, stdin);
+    (*vet)[*quantidade].nome[strcspn((*vet)[*quantidade].nome, "\n")] = '\0';
+
     printf("CPF (Apenas os numeros): ");
     scanf("%s", (*vet)[*quantidade].cpf);
+
     printf("Idade: ");
     scanf("%d", &(*vet)[*quantidade].idade);
+
     printf("Nome de Usuario: ");
     scanf("%s", (*vet)[*quantidade].nomeUser);
+
     printf("Senha: ");
     scanf("%s", (*vet)[*quantidade].senha);
     
-    bool cpfV;
-
-    cpfV = validaCPF((*vet)[*quantidade].cpf);
+    bool cpfV = validaCPF((*vet)[*quantidade].cpf);
 
     if(cpfV) {
         printf("e um CPF valido");
