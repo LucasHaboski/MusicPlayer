@@ -135,7 +135,7 @@ bool criarConta(User **vet, int *quantidade, int *capacidade){
     scanf("%s", (*vet)[*quantidade].email);
     printf("Nome completo: ");
     scanf("%s", (*vet)[*quantidade].nome);
-    printf("CPF: ");
+    printf("CPF (Apenas os numeros): ");
     scanf("%s", (*vet)[*quantidade].cpf);
     printf("Idade: ");
     scanf("%d", &(*vet)[*quantidade].idade);
