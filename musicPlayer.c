@@ -122,6 +122,10 @@ bool validaCPF(const char *cpf) {
     return false;
 }
 
+void acessarConta(){
+    printf("Acesso legal");
+}
+
 bool criarConta(User **vet, int *quantidade, int *capacidade){
     
     if (*quantidade >= *capacidade){
@@ -164,6 +168,14 @@ bool criarConta(User **vet, int *quantidade, int *capacidade){
 
 }
 
+void acessaApp(){
+    printf("Acessando conta!");
+}
+
+void sobreNos(){
+    printf("Somos um grupo de 2 pessoas normais e o Ryann Valim!");
+}
+
 int main() {
 
     cabecalhoIntro();
@@ -181,16 +193,16 @@ int main() {
 
     switch(opcao) {
         case '1':
-            printf("aaa");
+            acessarConta();
             break;
         case '2':
             criarConta(&vetUsers, &qnt, &capacidade);
             break;
         case '3':
-            printf("teste num2 ");
+            acessaApp();
             break;
         case '4':
-            printf("teste num2 ");
+            sobreNos();
             break;
         case '5':
             printf("\n\nFinalizando o programa...\n");
