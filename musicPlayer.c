@@ -1,220 +1,407 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h> // sleep
-#include <stdbool.h> // Validar cpf e retornar true ou false (ai mais é inutil sla o que) tmj👍🏾
-#include <conio.h> // Usar o getch() para pegar a resposta do user sem ter que dar enter, viadagem? Sim👍🏾
-  
-void cabecalhoIntro() {
-    printf("\033[H\033[J");
-    printf("==============================================================================================================\n");
-    usleep(100000);
-    printf("|                                                                                                            |\n");
-    usleep(100000);
-    printf("|                                                                                       !                    |\n");
-    usleep(100000);
-    printf("|                                                                                       |    |~/             |\n");
-    usleep(100000);
-    printf("|                                                                                       |   _|~              |\n");
-    usleep(100000);
-    printf("|                                                                         .============.|  (_|   |~/         |\n");
-    usleep(100000);
-    printf("|                                                                       .-;____________;|.      _|~          |\n");
-    usleep(100000);
-    printf("|     _____         _                                                   | [_________I__] |     (_|           |\n");
-    usleep(100000);
-    printf("|    | ____|       | |                                                  |  ''''' (_) (_) |                   |\n");
-    usleep(100000);                   
-    printf("|    | |   ______  | |_ _   _ _ __   ___ ___                            | .=====..=====. |                   |\n");
-    usleep(100000);                   
-    printf("|    | |  |______| | __| | | | '_ | / _ | __|                           | |:::::||:::::| |                   |\n");
-    usleep(100000);                   
-    printf("|    | |___        | |_| |_| | | | |  __|__ |                           | '=====''=====' |                   |\n");
-    usleep(100000);
-    printf("|    |_____|       |__||__,__|_| |_||___|___/                           '----------------'                   |\n");
-    usleep(100000);
-    printf("==============================================================================================================\n");
-    usleep(400000);  
-}
+#include <stdio.h> // Funções de auxilio.
+#include <stdlib.h> // Funções de auxilio.
+#include <windows.h> // Uso da função Sleep();
+#include <stdbool.h> // Validações com booleanos.
+#include <conio.h> // Uso do getch() para pegar a escolha do usuário sem ele precisar dar enter.
 
-void cabecalho() {
-    printf("\033[H\033[J");
-    printf("==============================================================================================================\n");
-    printf("|                                                                                                            |\n");
-    printf("|                                                                                       !                    |\n");
-    printf("|                                                                                       |    |~/             |\n");
-    printf("|                                                                                       |   _|~              |\n");
-    printf("|                                                                         .============.|  (_|   |~/         |\n");
-    printf("|                                                                       .-;____________;|.      _|~          |\n");
-    printf("|     _____         _                                                   | [_________I__] |     (_|           |\n");
-    printf("|    | ____|       | |                                                  |  ''''' (_) (_) |                   |\n");                   
-    printf("|    | |   ______  | |_ _   _ _ __   ___ ___                            | .=====..=====. |                   |\n");                   
-    printf("|    | |  |______| | __| | | | '_ | / _ | __|                           | |:::::||:::::| |                   |\n");                   
-    printf("|    | |___        | |_| |_| | | | |  __|__ |                           | '=====''=====' |                   |\n");
-    printf("|    |_____|       |__||__,__|_| |_||___|___/                           '----------------'                   |\n");
-    printf("==============================================================================================================\n");
-    usleep(200000);  
-}
-
-void escolhas(){
-    printf("|                                                                                                            |\n");
-    printf("|   [1] Login                                                                                                |\n");
-    printf("|                                                                                                            |\n");
-    printf("|   [2] Criar Conta                                                                                          |\n");
-    printf("|                                                                                                            |\n");
-    printf("|   [3] Entrar como convidado                                                                                |\n");
-    printf("|                                                                                                            |\n");
-    printf("|   [4] Sobre o aplicativo                                                                                   |\n");
-    printf("|                                                                                                            |\n");
-    printf("|   [5] Sair                                                                                                 |\n");
-    printf("|                                                                                                            |\n");
-    printf("==============================================================================================================\n");
-}
-
+// Struct das informações do usuário.
 typedef struct {
     char email[100];
-    char nome [100];
-    char cpf [12];
+    char nomeCompleto[100];
+    char cpf[12];
     int idade;
-    char nomeUser [50];
+    char nomeUsuario[50];
     char senha[30];
 } User;
 
-bool validaCPF(const char *cpf) {
-    int cpfNum[11]; // Transformar a string em numérico
-    int i, mult, somaVerificador1 = 0, somaVerificador2 = 0, cpfRep=0;
+// Cabeçalho - Intro: será mostrada somente na primeira abertura do programa.
+void cabecalhoIntro(){
+    printf("\033[H\033[J");
+    printf("======================================================================================================\n"); Sleep(100);
+    printf("|                                                                                                    |\n"); Sleep(100);
+    printf("|                                                                                   !                |\n"); Sleep(100);
+    printf("|                                                                                   |    |~/         |\n"); Sleep(100);
+    printf("|                                                                                   |   _|~          |\n"); Sleep(100);
+    printf("|                                                                     .============.|  (_|   |~/     |\n"); Sleep(100);
+    printf("|                                                                   .-;____________;|.      _|~      |\n"); Sleep(100);
+    printf("|      _____         _                                              | [_________I__] |     (_|       |\n"); Sleep(100);
+    printf("|     | ____|       | |                                             |  ''''' (_) (_) |               |\n"); Sleep(100);                   
+    printf("|     | |   ______  | |_ _   _ _ __   ___ ___                       | .=====..=====. |               |\n"); Sleep(100);                   
+    printf("|     | |  |______| | __| | | | '_ | / _ | __|                      | |:::::||:::::| |               |\n"); Sleep(100);                   
+    printf("|     | |___        | |_| |_| | | | |  __|__ |                      | '=====''=====' |               |\n"); Sleep(100);
+    printf("|     |_____|       |__||__,__|_| |_||___|___/                      '----------------'               |\n"); Sleep(100);
+    printf("|                                                                                                    |\n"); Sleep(100);
+    printf("======================================================================================================\n"); Sleep(200);  
+}
 
-    // Validar se o user não digitou algo alem de numeros
+// Cabeçalho: será mostrado toda vez que o menu inicial precisar ser atualizado.
+void cabecalho(){
+    printf("\033[H\033[J");
+    printf("======================================================================================================\n");
+    printf("|                                                                                                    |\n");
+    printf("|                                                                                   !                |\n");
+    printf("|                                                                                   |    |~/         |\n");
+    printf("|                                                                                   |   _|~          |\n");
+    printf("|                                                                     .============.|  (_|   |~/     |\n");
+    printf("|                                                                   .-;____________;|.      _|~      |\n");
+    printf("|      _____         _                                              | [_________I__] |     (_|       |\n");
+    printf("|     | ____|       | |                                             |  ''''' (_) (_) |               |\n");                   
+    printf("|     | |   ______  | |_ _   _ _ __   ___ ___                       | .=====..=====. |               |\n");                   
+    printf("|     | |  |______| | __| | | | '_ | / _ | __|                      | |:::::||:::::| |               |\n");                   
+    printf("|     | |___        | |_| |_| | | | |  __|__ |                      | '=====''=====' |               |\n");
+    printf("|     |_____|       |__||__,__|_| |_||___|___/                      '----------------'               |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+    Sleep(200);  
+}
+
+// Menu de escolhas será atualizado enquanto o usuário estiver navegando pelo menu inicial.
+void escolhas(){
+    printf("|                                                                                                    |\n");
+    printf("|              [1] Login                                                                             |\n");
+    printf("|              [2] Criar Conta                                                                       |\n");
+    printf("|              [3] Entrar como convidado                                                             |\n");
+    printf("|              [4] Entrar como administrador                                                         |\n");
+    printf("|              [5] Sobre o aplicativo                                                                |\n");
+    printf("|                                                                                                    |\n");
+    printf("|              [0] Sair                                                                              |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+}
+
+// O menu de escolhas será mostrado atualizado sempre que o usuário digitar uma opção que não esteja presente no switch-case.
+void escolhaErrada(){
+    system("cls");
+    cabecalho();
+    printf("|                                                                                                    |\n");
+    printf("|                      Voce digitou uma opcao errada. Por favor, tente novamente!                    |\n");
+    printf("|                                                                                                    |\n");
+    printf("|              [1] Login                                                                             |\n");
+    printf("|              [2] Criar Conta                                                                       |\n");
+    printf("|              [3] Entrar como convidado                                                             |\n");
+    printf("|              [4] Entrar como administrador                                                         |\n");
+    printf("|              [5] Sobre o aplicativo                                                                |\n");
+    printf("|                                                                                                    |\n");
+    printf("|              [0] Sair                                                                              |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+}
+
+// Caso nenhuma conta tenha sido cadastrada ainda ou o arquivo "usuário.dat" não exista, essa função será utilizada.
+void nenhumaContaCadastrada(){
+    system("cls");
+    cabecalho();
+    printf("|                                                                                                    |\n");
+    printf("|                Nao existem contas criadas ainda. Por favor, cadastre uma nova conta!               |\n");
+    printf("|                                                                                                    |\n");
+    printf("|              [1] Login                                                                             |\n");
+    printf("|              [2] Criar Conta                                                                       |\n");
+    printf("|              [3] Entrar como convidado                                                             |\n");
+    printf("|              [4] Sobre o aplicativo                                                                |\n");
+    printf("|                                                                                                    |\n");
+    printf("|              [0] Sair                                                                              |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+}
+
+// Caso o usuário digite a opção '0' no menu inicial o programa finaliza.
+void finalizarPrograma(){
+    cabecalho();
+    printf("|                                                                                                    |\n");
+    printf("|                                 Muito obrigado e ate uma proxima vez!                              |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+}
+
+void infoCadastro(){
+    cabecalho();
+    printf("|                                                                                                    |\n");
+    printf("|                     Digite o numero '0' no campo 'E-mail' para voltar ao menu.                     |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+}
+
+// Função que acessa uma conta já cadastrada.
+void acessarConta(){
+    // Abre o file 'usuarios.dat'
+    FILE *file = fopen("usuarios.dat", "rb");
+    
+    // Caso não ache printa uma mensagem de erro na tela informando que nenhuma conta foi cadastrada ainda.
+    if (!file) {
+        nenhumaContaCadastrada();
+        return;
+    }
+
+    // Requerindo E-mail e Senha de acesso para o usuário.
+    User usuario;
+    char email[100], senha[30];
+
+    // Flag para validar se o usuario foi encontrado no file.
+    bool usuarioEncontrado = false;
+
+    cabecalho();
+
+    // Login -> E-mail e Senha
+    printf(">> Login -> E-mail: ");
+    scanf("%s", email);
+    getchar();
+
+    printf(">> Login -> Senha: ");
+    scanf("%s", senha);
+    getchar();
+
+    // Lê os dados do arquivo binário
+    while (fread(&usuario, sizeof(User), 1, file)) {
+
+        // Usando o 'strcmp' para comparar se o E-mail e a Senha do usuário são iguais aos que foram feitos na leitura.
+        if (strcmp(usuario.email, email) == 0 && strcmp(usuario.senha, senha) == 0) {
+            usuarioEncontrado = true;
+            break;
+        }
+    }
+
+    // Fecha o file.
+    fclose(file);
+
+    // Se o usuário e a senha forem encontrados, então uma mensagem de boas vindas aparece ao usuário.
+    if (usuarioEncontrado) {
+        printf(">> Bem-vindo novamente, %s!\n\n", usuario.nomeUsuario);
+    }
+    // Caso contrário, uma mensagem de erro aparece e o usuário tem que tentar logar novamente.
+    else {
+        printf(">> Email ou senha incorretos!\n\n");
+    }
+}
+
+// Validação de CPF
+bool validarCPF(const char* cpf){
+    int i, soma, resto, digito1, digito2;
+    int pesos1[9] = {10, 9, 8, 7, 6, 5, 4, 3, 2};
+    int pesos2[10] = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
+
+    // Verificar se o CPF tem 11 dígitos.
+    if (strlen(cpf) != 11) {
+        return false;
+    }
+
+    // Verificar se todos os caracteres são dígitos.
     for (i = 0; i < 11; i++) {
         if (cpf[i] < '0' || cpf[i] > '9') {
-            printf("CPF INVALIDO! Deve conter apenas o numero do CPF!");
             return false;
         }
-        cpfNum[i] = cpf[i] - '0'; // transformando string em numero
     }
 
-    // Protegendo de cpfs que funcionam seguindo a lógica de baixo mas não deveriam ex: (111.111.111-11 ou 222.222.222-22) vcs entenderam
-    for (i = 1; i < 11; i++) {
-        if(cpfNum[i] == cpfNum[0]){ cpfRep++; }
-    }
-    if(cpfRep == 10){return false;}
-    
-
-    // Fazendo a soma e contas para o primeiro digito verificador xxx.xxx.xxx-Ox
-    for (i = 0, mult = 10; i < 9 && mult >= 2; i++, mult--) { somaVerificador1 += (cpfNum[i] * mult); }
-
-    int primeiroVerificador = 11 - (somaVerificador1 % 11);
-
-    if (primeiroVerificador >= 10) { primeiroVerificador = 0; }
-
-    // Fazendo a soma e contas para o segundo digito verificador xxx.xxx.xxx-xO
-    if (primeiroVerificador == cpfNum[9]) {
-
-        for (i = 0, mult = 11; i < 10 && mult >= 2; i++, mult--) { somaVerificador2 += (cpfNum[i] * mult); }
-
-        int segundoVerificador = 11 - (somaVerificador2 % 11);
-
-        if (segundoVerificador >= 10) { segundoVerificador = 0; }
-
-        if (segundoVerificador == cpfNum[10]) { return true; }
-
+    // Verifica se o CPF não tem dígitos repetidos.
+    if (strcmp(cpf, "00000000000") == 0 || strcmp(cpf, "11111111111") == 0 ||
+        strcmp(cpf, "22222222222") == 0 || strcmp(cpf, "33333333333") == 0 ||
+        strcmp(cpf, "44444444444") == 0 || strcmp(cpf, "55555555555") == 0 ||
+        strcmp(cpf, "66666666666") == 0 || strcmp(cpf, "77777777777") == 0 ||
+        strcmp(cpf, "88888888888") == 0 || strcmp(cpf, "99999999999") == 0) {
+        return false;
     }
 
-    return false;
+    // Calcular o primeiro dígito verificador.
+    soma = 0;
+    for (i = 0; i < 9; i++) {
+        soma += (cpf[i] - '0') * pesos1[i];
+    }
+    resto = soma % 11;
+    if (resto < 2) {
+        digito1 = 0;
+    } else {
+        digito1 = 11 - resto;
+    }
+
+    // Calcular o segundo dígito verificador.
+    soma = 0;
+    for (i = 0; i < 9; i++) {
+        soma += (cpf[i] - '0') * pesos2[i];
+    }
+    soma += digito1 * pesos2[9];
+    resto = soma % 11;
+    if (resto < 2) {
+        digito2 = 0;
+    } else {
+        digito2 = 11 - resto;
+    }
+
+    // Verificar se os dígitos verificadores estão corretos.
+    if (cpf[9] - '0' == digito1 && cpf[10] - '0' == digito2) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
-void acessarConta(){
-    printf("Acesso legal");
+bool validarSenha(const char* senha) {
+    int i;
+    bool temNumero = false;
+
+    // Verificar se a senha tem mais de 6 caracteres
+    if (strlen(senha) <= 5) {
+        return false;
+    }
+
+    // Verificar se a senha contém pelo menos um número
+    for (i = 0; senha[i] != '\0'; i++) {
+        if (isdigit(senha[i])) {
+            temNumero = true;
+            break;
+        }
+    }
+
+    // Retornar true se a senha for válida, caso contrário, false
+    return temNumero;
 }
 
-bool criarConta(User **vet, int *quantidade, int *capacidade){
-    
+// Função que cadastra uma nova conta de usuário.
+void cadastrarConta(User **vet, int *quantidade, int *capacidade){
+    // Abrindo o file para realizar a adição dos dados de cada nova conta cadastrada.
+    FILE *file = fopen("usuarios.dat", "ab");
+
+    // Caso não ache o arquivo 'usuarios.dat', mostra uma mensagem de erro.
+    if (!file) {
+        perror("Erro ao abrir arquivo");
+        return;
+    }
+
+    // Se a quantidade de cadastros for maior ou igual a capacidade de usuários, uma realocação de memória com os novos valores será feita.
     if (*quantidade >= *capacidade){
         *capacidade *= 2;
         *vet = (User *) realloc (*vet, *capacidade * sizeof(User));
     }
 
-    cabecalho();
-    
-    printf("E-mail: ");
-    scanf("%s", (*vet)[*quantidade].email);
+    // Variável para possibilitar o cadastro de um novo usuário.
+    char continuar;
 
-    getchar();
+    // Cadastrando um novo usuário
+    do {
+        infoCadastro();
+        printf("==> Cadastrando um novo usuario.\n");
 
-    printf("Nome completo: ");
-    fgets((*vet)[*quantidade].nome, 100, stdin);
-    (*vet)[*quantidade].nome[strcspn((*vet)[*quantidade].nome, "\n")] = '\0';
+        printf(">> Cadastro -> E-mail: ");
+        scanf("%s", (*vet)[*quantidade].email);
+        if ((*vet)[*quantidade].email[0] == '0') { return; }
+        getchar();
 
-    printf("CPF (Apenas os numeros): ");
-    scanf("%s", (*vet)[*quantidade].cpf);
+        printf(">> Cadastro -> Nome completo: ");
+        fgets((*vet)[*quantidade].nomeCompleto, sizeof((*vet)[*quantidade].nomeCompleto), stdin);
 
-    printf("Idade: ");
-    scanf("%d", &(*vet)[*quantidade].idade);
+        // Validação do CPF
+        bool validacaoCPF = true;
+        do{
+            printf(">> Cadastro -> CPF: ");
+            scanf("%s", (*vet)[*quantidade].cpf);
 
-    printf("Nome de Usuario: ");
-    scanf("%s", (*vet)[*quantidade].nomeUser);
+            // Chama uma função que valida o CPF.
+            validacaoCPF = validarCPF((*vet)[*quantidade].cpf);
+            if (!validacaoCPF) {
+                printf(">> ERRO! CPF invalido. Tente novamente.\n");
+            }
+        } while(!validacaoCPF);
+        getchar();
 
-    printf("Senha: ");
-    scanf("%s", (*vet)[*quantidade].senha);
-    
-    bool cpfV = validaCPF((*vet)[*quantidade].cpf);
+        printf(">> Cadastro -> Idade: ");
+        scanf("%d", &(*vet)[*quantidade].idade);
+        getchar();
 
-    if(cpfV) {
-        printf("e um CPF valido");
-        return true;
-    }else {printf("Esse CPF nao e valido!");}
+        printf(">> Cadastro -> Nome de usuario: ");
+        scanf("%[^\n]s", (*vet)[*quantidade].nomeUsuario);
+        getchar();
 
+        // Validação da senha
+        bool validacaoSenha = true;
+        do{
+            printf(">> Cadastro -> Senha: ");
+            scanf("%s", (*vet)[*quantidade].senha);
+
+            // Chama uma função que valida o CPF.
+            validacaoSenha = validarSenha((*vet)[*quantidade].senha);
+            if (!validacaoSenha) {
+                printf(">> ERRO! Senha precisa ter pelo menos 1 numero e mais de 5 caracteres!\n");
+            }
+        } while(!validacaoSenha);
+        getchar();
+
+        // Salva os dados de cada novo usuário no file usando a função fwrite();
+        fwrite(&(*vet)[*quantidade], sizeof(User), 1, file);
+        printf("\n>> Conta criada com sucesso!");
+
+        // Pergunta se o usuário deseja cadastrar outra conta
+        printf("\n>> Deseja cadastrar outra conta? (s/n): ");
+        continuar = getch();
+
+    } while (continuar == 's' || continuar == 'S');
+
+    // Ponteiro de quantidade de usuários incrementa em 1
     (*quantidade)++;
-    return true;
 
+    // Fechamento do file.
+    fclose(file);
 }
 
-void acessaApp(){
-    printf("Acessando conta!");
-}
+int main(){
 
-void sobreNos(){
-    printf("Somos um grupo de 2 pessoas normais e o Ryann Valim!");
-}
-
-int main() {
-
+    // Intro para quando o programa for aberto pela primeira vez e menu de escolha para o usuário.
     cabecalhoIntro();
     escolhas();
 
-    User *vetUsers; // Por enquanto depois tem q ver com faz com FILE
+    // Declarando variáveis iniciais e alocando memória para os usuários.
     int qnt = 0;
     int capacidade = 4;
 
+    User *vetUsers;
     vetUsers = (User *) calloc (capacidade, sizeof(User));
 
-    char opcao;
+    // Pegando o input do usuário.
+    char opcao = -1;
+    
+    do{
+        // Pegando o input do usuário.
+        printf(">> ");
+        scanf(" %c", &opcao);
 
-    opcao = getch(); // Pegando resposta do user sem precisar dar enter
+        // Switch-case para as opções disponíveis ao usuário.
+        switch(opcao) {
+            // Finalizar o progama.
+            case '0':
+                finalizarPrograma();
+                break;
+            
+            // Fazer o login.
+            case '1':
+                acessarConta();
+                break;
+            
+            // Criar uma nova conta.
+            case '2':
+                cadastrarConta(&vetUsers, &qnt, &capacidade);
+                system("cls");
+                cabecalho();
+                escolhas();
+                break;
+            
+            // Entrar como convidado.
+            case '3':
+                printf("Voce acessou a opcao '3'!\n");
+                break;
 
-    switch(opcao) {
-        case '1':
-            acessarConta();
-            break;
-        case '2':
-            criarConta(&vetUsers, &qnt, &capacidade);
-            break;
-        case '3':
-            acessaApp();
-            break;
-        case '4':
-            sobreNos();
-            break;
-        case '5':
-            printf("\n\nFinalizando o programa...\n");
-            usleep(1000000);
-            exit(0);
-            break;
-        default:
-            printf("Voce digitou um numero errado!");
-            break;
+            // Entrar como administrador.
+            case '4':
+                printf("Voce acessou a opcao '4'!\n");
+                break;
 
-    }
+            // Sobre nós.
+            case '5':
+                printf("Voce acessou a opcao '5'!\n");
+                break;
 
-    free(vetUsers);
+            // Caso o usuário digite qualquer outra coisa que não esteja nas opções.
+            default:
+                escolhaErrada();
+                break;
+        }
+    } while(opcao != '0');
+
     return 0;
 }
