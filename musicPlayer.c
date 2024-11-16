@@ -221,6 +221,7 @@ bool validarCPF(const char* cpf){
     int i, soma, resto, digito1, digito2;
     int pesos1[9] = {10, 9, 8, 7, 6, 5, 4, 3, 2};
     int pesos2[10] = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
+    int cpfRep = 0;
 
     // Verificar se o CPF tem 11 dígitos.
     if (strlen(cpf) != 11) {
@@ -235,13 +236,10 @@ bool validarCPF(const char* cpf){
     }
 
     // Verifica se o CPF não tem dígitos repetidos.
-    if (strcmp(cpf, "00000000000") == 0 || strcmp(cpf, "11111111111") == 0 ||
-        strcmp(cpf, "22222222222") == 0 || strcmp(cpf, "33333333333") == 0 ||
-        strcmp(cpf, "44444444444") == 0 || strcmp(cpf, "55555555555") == 0 ||
-        strcmp(cpf, "66666666666") == 0 || strcmp(cpf, "77777777777") == 0 ||
-        strcmp(cpf, "88888888888") == 0 || strcmp(cpf, "99999999999") == 0) {
-        return false;
+    for (i = 1; i < 11; i++) {
+        if(cpf[i] == cpf[0]){ cpfRep++; }
     }
+    if(cpfRep == 10){return false;}
 
     // Calcular o primeiro dígito verificador.
     soma = 0;
