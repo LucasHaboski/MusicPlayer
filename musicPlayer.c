@@ -153,6 +153,8 @@ void finalizarPrograma(){
     printf("|                                 Muito obrigado e ate uma proxima vez!                              |\n");
     printf("|                                                                                                    |\n");
     printf("======================================================================================================\n");
+    Sleep(500);
+    exit(0); // Finaliza o programa
 }
 
 // Informações para o cadastro de um novo usuário.
