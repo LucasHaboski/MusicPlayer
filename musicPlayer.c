@@ -14,6 +14,13 @@ typedef struct {
     char senha[30];
 } User;
 
+// Struct para os admins.
+typedef struct {
+    char emailAdmin[100];
+    char nomeAdmin[50];
+    char senhaAdmin[30];
+} Admin;
+
 // Cabeçalho - Intro: será mostrada somente na primeira abertura do programa.
 void cabecalhoIntro(){
     printf("\033[H\033[J");
@@ -74,7 +81,7 @@ void escolhaErrada(){
     system("cls");
     cabecalho();
     printf("|                                                                                                    |\n");
-    printf("|                      Voce digitou uma opcao errada. Por favor, tente novamente!                    |\n");
+    printf("|                    Voce selecionou uma opcao errada. Por favor, tente novamente!                   |\n");
     printf("|                                                                                                    |\n");
     printf("|              [1] Login                                                                             |\n");
     printf("|              [2] Criar Conta                                                                       |\n");
@@ -97,7 +104,42 @@ void nenhumaContaCadastrada(){
     printf("|              [1] Login                                                                             |\n");
     printf("|              [2] Criar Conta                                                                       |\n");
     printf("|              [3] Entrar como convidado                                                             |\n");
-    printf("|              [4] Sobre o aplicativo                                                                |\n");
+    printf("|              [4] Entrar como administrador                                                         |\n");
+    printf("|              [5] Sobre o aplicativo                                                                |\n");
+    printf("|                                                                                                    |\n");
+    printf("|              [0] Sair                                                                              |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+}
+
+// Função que será usada para as escolhas do administrador.
+void escolhasAdmin(){
+    system("cls");
+    cabecalho();
+    printf("|                                                                                                    |\n");
+    printf("|              [1] Listar usuarios                                                                   |\n");
+    printf("|              [2] Excluir uma conta                                                                 |\n");
+    printf("|              [3] Desativar uma conta                                                               |\n");
+    printf("|              [4] Procurar por um usuario                                                           |\n");
+    printf("|              [5] Cadastrar um novo administrador                                                   |\n");
+    printf("|                                                                                                    |\n");
+    printf("|              [0] Sair                                                                              |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+}
+
+// Para caso o admin escolha uma opção errada.
+void escolhasAdminErrada(){
+    system("cls");
+    cabecalho();
+    printf("|                                                                                                    |\n");
+    printf("|                    Voce selecionou uma opcao errada. Por favor, tente novamente!                   |\n");
+    printf("|                                                                                                    |\n");
+    printf("|              [1] Listar usuarios                                                                   |\n");
+    printf("|              [2] Excluir uma conta                                                                 |\n");
+    printf("|              [3] Desativar uma conta                                                               |\n");
+    printf("|              [4] Procurar por um usuario                                                           |\n");
+    printf("|              [5] Cadastrar um novo administrador                                                   |\n");
     printf("|                                                                                                    |\n");
     printf("|              [0] Sair                                                                              |\n");
     printf("|                                                                                                    |\n");
@@ -113,6 +155,7 @@ void finalizarPrograma(){
     printf("======================================================================================================\n");
 }
 
+// Informações para o cadastro de um novo usuário.
 void infoCadastro(){
     cabecalho();
     printf("|                                                                                                    |\n");
@@ -233,6 +276,7 @@ bool validarCPF(const char* cpf){
     }
 }
 
+// Validação de Senha
 bool validarSenha(const char* senha) {
     int i;
     bool temNumero = false;
@@ -340,6 +384,61 @@ void cadastrarConta(User **vet, int *quantidade, int *capacidade){
     fclose(file);
 }
 
+// Função que acessa o programa como convidado.
+void acessarConvidado(){
+    cabecalho();
+    printf("|                                                                                                    |\n");
+    printf("|                Seja vem vindo convidado! Voce sera redirecionado em instantes.                     |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n"); Sleep(3500);
+}
+
+// Função que acessa o programa como administrador.
+void acessarAdmin(){
+    // Abre o file 'usuarios.dat'
+    FILE *fileAdmin = fopen("admin.dat", "rb");
+    
+    // Requerindo E-mail e Senha de acesso para o admin.
+    Admin adm;
+    char emailAdm[100], senhaAdm[30];
+
+    // Flag para validar se o admin foi encontrado no file.
+    bool adminEncontrado = false;
+
+    cabecalho();
+
+    // Login -> E-mail e Senha
+    printf(">> Login -> E-mail: ");
+    scanf("%s", emailAdm);
+    getchar();
+
+    printf(">> Login -> Senha: ");
+    scanf("%s", senhaAdm);
+    getchar();
+
+    // Lê os dados do arquivo binário
+    while (fread(&adm, sizeof(Admin), 1, fileAdmin)) {
+
+        // Usando o 'strcmp' para comparar se o E-mail e a Senha do admin são iguais aos que foram feitos na leitura.
+        if (strcmp(adm.emailAdmin, emailAdm) == 0 && strcmp(adm.senhaAdmin, senhaAdm) == 0) {
+            adminEncontrado = true;
+            break;
+        }
+    }
+
+    // Fecha o file.
+    fclose(fileAdmin);
+
+    // Se o usuário e a senha forem encontrados, então uma mensagem de boas vindas aparece ao usuário.
+    if (adminEncontrado) {
+        printf(">> Acesso garantido ao admin %s!\n\n", adm.nomeAdmin);
+    }
+    // Caso contrário, uma mensagem de erro aparece e o usuário tem que tentar logar novamente.
+    else {
+        printf(">> Administrador nao encontrado!\n\n");
+    }
+}
+
 int main(){
 
     // Intro para quando o programa for aberto pela primeira vez e menu de escolha para o usuário.
@@ -383,12 +482,12 @@ int main(){
             
             // Entrar como convidado.
             case '3':
-                printf("Voce acessou a opcao '3'!\n");
+                acessarConvidado();
                 break;
 
             // Entrar como administrador.
             case '4':
-                printf("Voce acessou a opcao '4'!\n");
+                acessarAdmin();
                 break;
 
             // Sobre nós.
