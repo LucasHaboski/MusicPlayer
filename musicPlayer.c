@@ -458,7 +458,9 @@ int main(){
     do{
         // Pegando o input do usuário.
         printf(">> ");
-        scanf(" %c", &opcao);
+        char opcao;
+
+        opcao = getch(); // Pegando resposta do user sem precisar dar enter
 
         // Switch-case para as opções disponíveis ao usuário.
         switch(opcao) {
