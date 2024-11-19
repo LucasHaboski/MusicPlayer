@@ -1,0 +1,4 @@
+,cd 'c:\Users\soulo\OneDrive\Documentos\GitHub\MusicPlayer\output',& .\'cadastroMusicas.exe',a,a/10,
+local,localizado,03:50,rock,10/10,
+a,a,a,a,a/10,
+Uba Uba Uba eh,Mr Valim,01:21:53,Festividade,10/10,
