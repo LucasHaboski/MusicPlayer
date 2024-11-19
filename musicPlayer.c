@@ -310,6 +310,39 @@ bool validarSenha(const char* senha) {
     return temNumero;
 }
 
+// Validação do Email
+bool validarEmail(const char* email){
+    int i, arrobaI = -1, ultimoPontoI = -1;
+    int tamanho = strlen(email);
+
+    // Verifica se Email não é muito pequeno < (xxxxx@xxxxx.xxx) ex q funciona: (ryann@ctunes.com)
+    if (tamanho < 13){return false;}
+
+    for(i = 0; i < tamanho; i++){
+        char l = email[i];
+
+        if(!isalnum(l) && l != '@' && l != '.' && l != '_' && l != '-'){return false;} // Verifica se tem caracteres invalidos (isalnum é para verificar alfanumericos)
+
+        // Pegar posição do '@'
+        if(l == '@'){
+            if(arrobaI != -1){return false;} // Vê se tem mais de um '@' no email
+            arrobaI = i;
+        }
+
+        // Pegar posição do ultimo '.'
+        if(l == '.'){
+            ultimoPontoI = i;
+        }
+    }
+
+    if(arrobaI == -1 || ultimoPontoI == -1){return false;} // Falta @ ou .
+    if(arrobaI < 5){return false;} // Tem que ter pelo menos 5 caracters no nome do email
+    if(ultimoPontoI < arrobaI + 6){return false;} // Tem que ter pelo menos 5 caracteres entre o '@' e o '.'| ex: (ctunes, gmail, yahoo, etc.) funcionam
+    if(ultimoPontoI >= (tamanho - 2)){return false;} // Tem que ter pelo menos 2 caracteres depois do ultimo ponto| ex: (.com, .br) funcionam
+
+    return true;
+}
+
 // Função que cadastra uma nova conta de usuário.
 void cadastrarConta(User **vet, int *quantidade, int *capacidade){
     // Abrindo o file para realizar a adição dos dados de cada nova conta cadastrada.
@@ -335,9 +368,18 @@ void cadastrarConta(User **vet, int *quantidade, int *capacidade){
         infoCadastro();
         printf("==> Cadastrando um novo usuario.\n");
 
-        printf(">> Cadastro -> E-mail: ");
-        scanf("%s", (*vet)[*quantidade].email);
-        if ((*vet)[*quantidade].email[0] == '0') { return; }
+        // Validação do Email
+        bool validacaoEmail = true;
+        do{
+            printf(">> Cadastro -> E-mail: ");
+            scanf("%s", (*vet)[*quantidade].email);
+            if ((*vet)[*quantidade].email[0] == '0') { return; }
+
+            validacaoEmail = validarEmail((*vet)[*quantidade].email);
+            if(!validacaoEmail){
+                printf(">> ERRO! Email invalido. Tente novamente.\n");
+            }
+        }while(!validacaoEmail); 
         getchar();
 
         printf(">> Cadastro -> Nome completo: ");
@@ -357,8 +399,15 @@ void cadastrarConta(User **vet, int *quantidade, int *capacidade){
         } while(!validacaoCPF);
         getchar();
 
-        printf(">> Cadastro -> Idade: ");
-        scanf("%d", &(*vet)[*quantidade].idade);
+        // Validação de Idade
+        do {
+            printf(">> Cadastro -> Idade: ");
+            scanf("%d", &(*vet)[*quantidade].idade);
+
+            if((*vet)[*quantidade].idade < 18){
+                printf(">> ERRO! Para criar conta devera ser maior de idade.\n");
+            }
+        }while((*vet)[*quantidade].idade < 18);
         getchar();
 
         printf(">> Cadastro -> Nome de usuario: ");
@@ -480,7 +529,6 @@ int main(){
                 break;
 
             case '5':
-                printf("Voce acessou a opcao '5'!\n");
                 sobreAplicativo();
                 break;
 
