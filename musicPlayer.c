@@ -1,6 +1,7 @@
 #include <stdio.h> // Funções de auxilio.
 #include <stdlib.h> // Funções de auxilio.
-#include <windows.h> // Uso da função Sleep();
+#include <string.h> // Funções de auxilio.
+#include <windows.h> // Uso da função Sleep().
 #include <stdbool.h> // Validações com booleanos.
 #include <conio.h> // Uso do getch() para pegar a escolha do usuário sem ele precisar dar enter.
 
@@ -13,13 +14,6 @@ typedef struct {
     char nomeUsuario[50];
     char senha[30];
 } User;
-
-// Struct para os admins.
-typedef struct {
-    char emailAdmin[100];
-    char nomeAdmin[50];
-    char senhaAdmin[30];
-} Admin;
 
 // Cabeçalho - Intro: será mostrada somente na primeira abertura do programa.
 void cabecalhoIntro(){
@@ -165,6 +159,24 @@ void infoCadastro(){
     printf("|                                                                                                    |\n");
     printf("======================================================================================================\n");
 }
+
+void sobreAplicativo() {
+    cabecalho();
+    printf("|                                                                                                    |\n");
+    printf("|               Bem-vindo ao nosso aplicativo CTunes, um Music Player inteiro em C!                  |\n");
+    printf("|                                                                                                    |\n");
+    printf("|       Somos um grupo de tres estudantes do 2o periodo de Ciencia da Computacao na UP:              |\n");
+    printf("|                    Lucas Haboski, Ryann Valim e Christian Andrade.                                 |\n");
+    printf("|                                                                                                    |\n");
+    printf("|        Nosso app permite que voce cadastre usuarios, crie playlists e curta suas musicas!          |\n");
+    printf("|                                                                                                    |\n");
+    printf("|                                                                                                    |\n");
+    printf("|                             Aperte (6) para voltar para o Menu                                     |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+    Sleep(5000);
+}
+
 
 // Função que acessa uma conta já cadastrada.
 void acessarConta(){
@@ -395,47 +407,22 @@ void acessarConvidado(){
 
 // Função que acessa o programa como administrador.
 void acessarAdmin(){
-    // Abre o file 'usuarios.dat'
-    FILE *fileAdmin = fopen("admin.dat", "rb");
     
-    // Requerindo E-mail e Senha de acesso para o admin.
-    Admin adm;
-    char emailAdm[100], senhaAdm[30];
-
-    // Flag para validar se o admin foi encontrado no file.
-    bool adminEncontrado = false;
-
-    cabecalho();
+    char email[50], senha[25];
 
     // Login -> E-mail e Senha
     printf(">> Login -> E-mail: ");
-    scanf("%s", emailAdm);
+    scanf("%s", email);
     getchar();
 
     printf(">> Login -> Senha: ");
-    scanf("%s", senhaAdm);
+    scanf("%s", senha);
     getchar();
 
-    // Lê os dados do arquivo binário
-    while (fread(&adm, sizeof(Admin), 1, fileAdmin)) {
-
-        // Usando o 'strcmp' para comparar se o E-mail e a Senha do admin são iguais aos que foram feitos na leitura.
-        if (strcmp(adm.emailAdmin, emailAdm) == 0 && strcmp(adm.senhaAdmin, senhaAdm) == 0) {
-            adminEncontrado = true;
-            break;
-        }
-    }
-
-    // Fecha o file.
-    fclose(fileAdmin);
-
-    // Se o usuário e a senha forem encontrados, então uma mensagem de boas vindas aparece ao usuário.
-    if (adminEncontrado) {
-        printf(">> Acesso garantido ao admin %s!\n\n", adm.nomeAdmin);
-    }
-    // Caso contrário, uma mensagem de erro aparece e o usuário tem que tentar logar novamente.
-    else {
-        printf(">> Administrador nao encontrado!\n\n");
+    if(strcmp(email, "admin@ctunes.com") == 0 && strcmp(senha, "admin")== 0) {
+        printf(">> Acesso garantido ao admin!");
+    }else{
+        printf(">> Acesso negado ao admin!");
     }
 }
 
@@ -492,9 +479,9 @@ int main(){
                 acessarAdmin();
                 break;
 
-            // Sobre nós.
             case '5':
                 printf("Voce acessou a opcao '5'!\n");
+                sobreAplicativo();
                 break;
 
             // Caso o usuário digite qualquer outra coisa que não esteja nas opções.
