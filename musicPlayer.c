@@ -553,46 +553,9 @@ void acessarConvidado()
     Sleep(3500);
 }
 
-// Função que acessa o programa como administrador.
-void acessarAdmin()
-{
+void mainMenu(){
 
-    char email[50], senha[25];
-
-    // Login -> E-mail e Senha
-    printf(">> Login -> E-mail: ");
-    scanf("%s", email);
-    getchar();
-
-    printf(">> Login -> Senha: ");
-    scanf("%s", senha);
-    getchar();
-
-    if (strcmp(email, "admin@ctunes.com") == 0 && strcmp(senha, "admin") == 0)
-    {
-        printf(">> Acesso garantido ao admin!");
-        escolhasAdmin();
-
-        char opAdmin = -1;
-
-        while (opAdmin != '0')
-        {
-
-            printf(">> ");
-            opAdmin = getch();
-        }
-    }
-    else
-    {
-        printf(">> Acesso negado ao admin!");
-    }
-}
-
-int main()
-{
-
-    // Intro para quando o programa for aberto pela primeira vez e menu de escolha para o usuário.
-    cabecalhoIntro();
+    cabecalho();
     escolhas();
 
     // Declarando variáveis iniciais e alocando memória para os usuários.
@@ -653,6 +616,73 @@ int main()
             break;
         }
     } while (opcao != '0');
+    
+}
+
+// Função que acessa o programa como administrador.
+void acessarAdmin()
+{
+
+    char email[50], senha[25];
+
+    // Login -> E-mail e Senha
+    printf(">> Login -> E-mail: ");
+    scanf("%s", email);
+    getchar();
+
+    printf(">> Login -> Senha: ");
+    scanf("%s", senha);
+    getchar();
+
+    if (strcmp(email, "admin@ctunes.com") == 0 && strcmp(senha, "admin") == 0)
+    {
+        printf(">> Acesso garantido ao admin!");
+        Sleep(2500);
+        escolhasAdmin();
+
+        char opAdmin = -1;
+
+        while (opAdmin != '0') {
+            printf("\n>> Digite sua escolha: ");
+            opAdmin = getch();
+
+            switch (opAdmin) {
+                case '1':
+                    printf("Opcao 1.\n");
+                    break;
+                case '2':
+                    printf("Opcao 2\n");
+                    break;
+                case '3':
+                    printf("Opcao 3.\n");
+                    break;
+                case '4':
+                    printf("Opcao 4\n");
+                    break;
+                case '5':
+                    printf("Opcao 5\n");
+                    break;
+                case '0':
+                    printf("Voltando ao menu principal\n");
+                    Sleep(2000); 
+                    mainMenu();
+                    return;
+                default:
+                    printf("Opcao invalida, tente novamente.\n");
+                    break;
+            }
+        }
+    }else{
+        printf(">> Acesso negado ao admin!");
+    }
+}
+
+int main()
+{
+
+    // Intro para quando o programa for aberto pela primeira vez e menu de escolha para o usuário.
+    cabecalhoIntro();
+    mainMenu();
 
     return 0;
 }
