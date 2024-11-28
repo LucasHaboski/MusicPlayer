@@ -127,42 +127,6 @@ void nenhumaContaCadastrada()
     printf("======================================================================================================\n");
 }
 
-// Função que será usada para as escolhas do administrador.
-void escolhasAdmin()
-{
-    system("cls");
-    cabecalho();
-    printf("|                                                                                                    |\n");
-    printf("|              [1] Listar usuarios                                                                   |\n");
-    printf("|              [2] Excluir uma conta                                                                 |\n");
-    printf("|              [3] Desativar uma conta                                                               |\n");
-    printf("|              [4] Procurar por um usuario                                                           |\n");
-    printf("|              [5] Cadastrar um novo administrador                                                   |\n");
-    printf("|                                                                                                    |\n");
-    printf("|              [0] Sair                                                                              |\n");
-    printf("|                                                                                                    |\n");
-    printf("======================================================================================================\n");
-}
-
-// Para caso o admin escolha uma opção errada.
-void escolhasAdminErrada()
-{
-    system("cls");
-    cabecalho();
-    printf("|                                                                                                    |\n");
-    printf("|                    Voce selecionou uma opcao errada. Por favor, tente novamente!                   |\n");
-    printf("|                                                                                                    |\n");
-    printf("|              [1] Listar usuarios                                                                   |\n");
-    printf("|              [2] Excluir uma conta                                                                 |\n");
-    printf("|              [3] Desativar uma conta                                                               |\n");
-    printf("|              [4] Procurar por um usuario                                                           |\n");
-    printf("|              [5] Cadastrar um novo administrador                                                   |\n");
-    printf("|                                                                                                    |\n");
-    printf("|              [0] Sair                                                                              |\n");
-    printf("|                                                                                                    |\n");
-    printf("======================================================================================================\n");
-}
-
 // Caso o usuário digite a opção '0' no menu inicial o programa finaliza.
 void finalizarPrograma()
 {
@@ -185,8 +149,8 @@ void infoCadastro()
     printf("======================================================================================================\n");
 }
 
-void sobreAplicativo()
-{
+// Função que mostra o cabeçalho do menu sobre o aplicativo.
+void cabecalhoSobreAplicativo(){
     cabecalho();
     printf("|                                                                                                    |\n");
     printf("|               Bem-vindo ao nosso aplicativo CTunes, um Music Player inteiro em C!                  |\n");
@@ -197,68 +161,88 @@ void sobreAplicativo()
     printf("|        Nosso app permite que voce cadastre usuarios, crie playlists e curta suas musicas!          |\n");
     printf("|                                                                                                    |\n");
     printf("|                                                                                                    |\n");
-    printf("|                             Aperte (6) para voltar para o Menu                                     |\n");
+    printf("|                             Aperte (0) para voltar para o Menu                                     |\n");
     printf("|                                                                                                    |\n");
     printf("======================================================================================================\n");
-    Sleep(5000);
+}
+
+// Menu sobre o aplicativo.
+void sobreAplicativo()
+{
+    cabecalhoSobreAplicativo();
+    char opcao;
+
+    do
+    {
+        printf(">> ");
+        opcao = getch();
+
+        if (opcao != '0')
+        {
+            printf("Opcao invalida, tente novamente.\n");
+        }
+
+    } while (opcao != '0');
 }
 
 // Função que acessa uma conta já cadastrada.
-void acessarConta()
+void acessarConta(int *acessou)
 {
-    // Abre o file 'usuarios.dat'
-    FILE *file = fopen("usuarios.dat", "rb");
-
-    // Caso não ache printa uma mensagem de erro na tela informando que nenhuma conta foi cadastrada ainda.
-    if (!file)
-    {
-        nenhumaContaCadastrada();
-        return;
-    }
-
-    // Requerindo E-mail e Senha de acesso para o usuário.
+    FILE *file;
     User usuario;
     char email[100], senha[30];
-
-    // Flag para validar se o usuario foi encontrado no file.
     bool usuarioEncontrado = false;
 
-    cabecalho();
-
-    // Login -> E-mail e Senha
-    printf(">> Login -> E-mail: ");
-    scanf("%s", email);
-    getchar();
-
-    printf(">> Login -> Senha: ");
-    scanf("%s", senha);
-    getchar();
-
-    // Lê os dados do arquivo binário
-    while (fread(&usuario, sizeof(User), 1, file))
+    do
     {
-
-        // Usando o 'strcmp' para comparar se o E-mail e a Senha do usuário são iguais aos que foram feitos na leitura.
-        if (strcmp(usuario.email, email) == 0 && strcmp(usuario.senha, senha) == 0)
+        // Tenta abrir o arquivo binário com os usuários cadastrados.
+        file = fopen("usuarios.dat", "rb");
+        if (!file)
         {
-            usuarioEncontrado = true;
+            nenhumaContaCadastrada();
+            return;
+        }
+
+        // Cabeçalho do menu de login
+        cabecalho();
+        printf(">> Login -> E-mail: ");
+        scanf("%s", email);
+        getchar();
+
+        printf(">> Login -> Senha: ");
+        scanf("%s", senha);
+        getchar();
+
+        // Procura pelo usuário no arquivo
+        usuarioEncontrado = false;
+        while (fread(&usuario, sizeof(User), 1, file))
+        {
+            if (strcmp(usuario.email, email) == 0 && strcmp(usuario.senha, senha) == 0)
+            {
+                usuarioEncontrado = true;
+                break;
+            }
+        }
+
+        fclose(file);
+
+        if (usuarioEncontrado)
+        {
+            printf(">> Bem-vindo novamente, %s!\n\n", usuario.nomeUsuario);
+            *acessou = 1;
             break;
         }
-    }
-
-    // Fecha o file.
-    fclose(file);
-
-    // Se o usuário e a senha forem encontrados, então uma mensagem de boas vindas aparece ao usuário.
-    if (usuarioEncontrado)
-    {
-        printf(">> Bem-vindo novamente, %s!\n\n", usuario.nomeUsuario);
-    }
-    // Caso contrário, uma mensagem de erro aparece e o usuário tem que tentar logar novamente.
-    else
-    {
-        printf(">> Email ou senha incorretos!\n\n");
-    }
+        else
+        {
+            printf(">> Email ou senha incorretos!\n\n");
+            printf(">> Aperte 0 para voltar ao menu ou qualquer outra tecla para tentar novamente.\n>> ");
+            char opcao = getch();
+            if (opcao == '0')
+            {
+                return;
+            }
+        }
+    } while (true);
 }
 
 // Validação de CPF
@@ -540,6 +524,9 @@ void cadastrarConta(User **vet, int *quantidade, int *capacidade)
 
     // Fechamento do file.
     fclose(file);
+    
+    // Limpa a tela.
+    system("cls");
 }
 
 // Função que acessa o programa como convidado.
@@ -553,8 +540,120 @@ void acessarConvidado()
     Sleep(3500);
 }
 
-void mainMenu(){
+// Função que será usada para as escolhas do administrador.
+void escolhasAdmin()
+{
+    system("cls");
+    cabecalho();
+    printf("|                                                                                                    |\n");
+    printf("|              [1] Listar usuarios                                                                   |\n");
+    printf("|              [2] Excluir uma conta                                                                 |\n");
+    printf("|              [3] Desativar uma conta                                                               |\n");
+    printf("|              [4] Procurar por um usuario                                                           |\n");
+    printf("|                                                                                                    |\n");
+    printf("|              [0] Sair                                                                              |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+}
 
+// Para caso o admin escolha uma opção errada.
+void escolhasAdminErrada()
+{
+    system("cls");
+    cabecalho();
+    printf("|                                                                                                    |\n");
+    printf("|                    Voce selecionou uma opcao errada. Por favor, tente novamente!                   |\n");
+    printf("|                                                                                                    |\n");
+    printf("|              [1] Listar usuarios                                                                   |\n");
+    printf("|              [2] Excluir uma conta                                                                 |\n");
+    printf("|              [3] Desativar uma conta                                                               |\n");
+    printf("|              [4] Procurar por um usuario                                                           |\n");
+    printf("|                                                                                                    |\n");
+    printf("|              [0] Sair                                                                              |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+}
+
+// Função que acessa o programa como administrador.
+void acessarAdmin(int *adminAcessou)
+{
+    char email[50], senha[25];
+    char opcao;
+
+    do
+    {
+        // Login -> E-mail e Senha
+        cabecalho();
+        printf(">> Login -> E-mail: ");
+        scanf("%s", email);
+        getchar();
+
+        printf(">> Login -> Senha: ");
+        scanf("%s", senha);
+        getchar();
+
+        // Valida o login do administrador
+        if (strcmp(email, "admin@ctunes.com") == 0 && strcmp(senha, "admin") == 0)
+        {
+            printf(">> Acesso garantido ao admin!\n");
+            *adminAcessou = 1;
+            Sleep(2000);
+
+            char opAdmin = -1;
+            escolhasAdmin();
+
+            do
+            {
+                printf(">> ");
+                opAdmin = getch();
+
+                switch (opAdmin)
+                {
+                case '1':
+                    printf("Opcao 1 selecionada.\n");
+                    break;
+                case '2':
+                    printf("Opcao 2 selecionada.\n");
+                    break;
+                case '3':
+                    printf("Opcao 3 selecionada.\n");
+                    break;
+                case '4':
+                    printf("Opcao 4 selecionada.\n");
+                    break;
+                case '0':
+                    printf("Saindo...\n");
+                    Sleep(2000);
+                    return;
+                default:
+                    escolhasAdminErrada();
+                    break;
+                }
+            } while (opAdmin != '0');
+
+            return;
+        }
+        else
+        {
+            printf(">> Acesso negado ao admin!\n\n");
+            printf(">> Aperte 0 para voltar ou qualquer outra tecla para tentar novamente: ");
+            opcao = getch();
+
+            if (opcao == '0')
+            {
+                return;
+            }
+        }
+    } while (true);
+}
+
+// Parte principal do programa.
+int main()
+{
+
+    // Intro para quando o programa for aberto pela primeira vez e menu de escolha para o usuário.
+    cabecalhoIntro();
+    
     cabecalho();
     escolhas();
 
@@ -569,11 +668,9 @@ void mainMenu(){
 
     do
     {
-        // Pegando o input do usuário.
+        // Pegando a resposta do user sem precisar dar enter
         printf(">> ");
-        char opcao;
-
-        opcao = getch(); // Pegando resposta do user sem precisar dar enter
+        opcao = getch();
 
         // Switch-case para as opções disponíveis ao usuário.
         switch (opcao)
@@ -585,13 +682,18 @@ void mainMenu(){
 
         // Fazer o login.
         case '1':
-            acessarConta();
+            int acessou = 0;
+            acessarConta(&acessou);
+            if (acessou == 0)
+            {
+                cabecalho();
+                escolhas();
+            }
             break;
 
         // Criar uma nova conta.
         case '2':
             cadastrarConta(&vetUsers, &qnt, &capacidade);
-            system("cls");
             cabecalho();
             escolhas();
             break;
@@ -603,11 +705,20 @@ void mainMenu(){
 
         // Entrar como administrador.
         case '4':
-            acessarAdmin();
+            int adminAcessou = 0;
+            acessarAdmin(&adminAcessou);
+            if (adminAcessou == 0)
+            {
+                escolhasAdmin();
+            }
+            cabecalho();
+            escolhas();
             break;
 
         case '5':
             sobreAplicativo();
+            cabecalho();
+            escolhas();
             break;
 
         // Caso o usuário digite qualquer outra coisa que não esteja nas opções.
@@ -616,73 +727,6 @@ void mainMenu(){
             break;
         }
     } while (opcao != '0');
-    
-}
-
-// Função que acessa o programa como administrador.
-void acessarAdmin()
-{
-
-    char email[50], senha[25];
-
-    // Login -> E-mail e Senha
-    printf(">> Login -> E-mail: ");
-    scanf("%s", email);
-    getchar();
-
-    printf(">> Login -> Senha: ");
-    scanf("%s", senha);
-    getchar();
-
-    if (strcmp(email, "admin@ctunes.com") == 0 && strcmp(senha, "admin") == 0)
-    {
-        printf(">> Acesso garantido ao admin!");
-        Sleep(2500);
-        escolhasAdmin();
-
-        char opAdmin = -1;
-
-        while (opAdmin != '0') {
-            printf("\n>> Digite sua escolha: ");
-            opAdmin = getch();
-
-            switch (opAdmin) {
-                case '1':
-                    printf("Opcao 1.\n");
-                    break;
-                case '2':
-                    printf("Opcao 2\n");
-                    break;
-                case '3':
-                    printf("Opcao 3.\n");
-                    break;
-                case '4':
-                    printf("Opcao 4\n");
-                    break;
-                case '5':
-                    printf("Opcao 5\n");
-                    break;
-                case '0':
-                    printf("Voltando ao menu principal\n");
-                    Sleep(2000); 
-                    mainMenu();
-                    return;
-                default:
-                    printf("Opcao invalida, tente novamente.\n");
-                    break;
-            }
-        }
-    }else{
-        printf(">> Acesso negado ao admin!");
-    }
-}
-
-int main()
-{
-
-    // Intro para quando o programa for aberto pela primeira vez e menu de escolha para o usuário.
-    cabecalhoIntro();
-    mainMenu();
 
     return 0;
 }
