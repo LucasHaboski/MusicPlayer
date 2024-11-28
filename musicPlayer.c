@@ -74,6 +74,41 @@ void cabecalho()
     Sleep(200);
 }
 
+// Cabecalho da parte interna do aplicativo.
+void cabecalhoParteInterna(){
+    cabecalho();
+    printf("|                                                                                                    |\n");
+    printf("|              Esta seria a parte interna do aplicativo, com a interface para tocar musicas          |\n");
+    printf("|                                                                                                    |\n");
+    printf("|             Aqui, a partir de uma biblioteca o usuario poderia escolher musicas e faze-las         |\n");
+    printf("|              tocar, tipo um player. Pretendemos expandir o projeto mais para frente, pois          |\n");
+    printf("|                  achar um jeito de fazer a musica tocar conforme a playlist do usuario             |\n");
+    printf("|                                   nao foi tao facil quanto pensamos.                               |\n");
+    printf("|                                                                                                    |\n");
+    printf("|                                   Aperte '0' para voltar para o menu                               |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+}
+
+// Parte interna do aplicativo.
+void parteInterna()
+{
+    cabecalhoParteInterna();
+    char opcao;
+
+    do
+    {
+        printf(">> ");
+        opcao = getch();
+
+        if (opcao != '0')
+        {
+            printf("Opcao invalida, tente novamente.\n");
+        }
+
+    } while (opcao != '0');
+}
+
 // Menu de escolhas será atualizado enquanto o usuário estiver navegando pelo menu inicial.
 void escolhas()
 {
@@ -193,16 +228,16 @@ void acessarConta(int *acessou)
     char email[100], senha[30];
     bool usuarioEncontrado = false;
 
+    // Tenta abrir o arquivo binário com os usuários cadastrados.
+    file = fopen("usuarios.dat", "rb");
+    if (!file)
+    {
+        *acessou = 1;
+        return;
+    }
+
     do
     {
-        // Tenta abrir o arquivo binário com os usuários cadastrados.
-        file = fopen("usuarios.dat", "rb");
-        if (!file)
-        {
-            nenhumaContaCadastrada();
-            return;
-        }
-
         // Cabeçalho do menu de login
         cabecalho();
         printf(">> Login -> E-mail: ");
@@ -229,7 +264,7 @@ void acessarConta(int *acessou)
         if (usuarioEncontrado)
         {
             printf(">> Bem-vindo novamente, %s! Voce sera redirecionado em instantes.\n\n", usuario.nomeUsuario);
-            *acessou = 1;
+            *acessou = 2;
             Sleep(3000);
             break;
         }
@@ -581,10 +616,11 @@ void acessarAdmin(int *adminAcessou)
     char email[50], senha[25];
     char opcao;
 
+    cabecalho();
+
     do
     {
         // Login -> E-mail e Senha
-        cabecalho();
         printf(">> Login -> E-mail: ");
         scanf("%s", email);
         getchar();
@@ -601,6 +637,7 @@ void acessarAdmin(int *adminAcessou)
             Sleep(2000);
 
             char opAdmin = -1;
+
             escolhasAdmin();
 
             do
@@ -689,6 +726,12 @@ int main()
             {
                 cabecalho();
                 escolhas();
+            } else if (acessou == 1){
+                nenhumaContaCadastrada();
+            } else {
+                parteInterna();
+                cabecalho();
+                escolhas();
             }
             break;
 
@@ -702,6 +745,9 @@ int main()
         // Entrar como convidado.
         case '3':
             acessarConvidado();
+            parteInterna();
+            cabecalho();
+            escolhas();
             break;
 
         // Entrar como administrador.
