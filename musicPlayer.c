@@ -14,6 +14,7 @@ typedef struct
     int idade;
     char nomeUsuario[50];
     char senha[30];
+    char  ativo;
 } User;
 
 // Cabeçalho - Intro: será mostrada somente na primeira abertura do programa.
@@ -139,7 +140,7 @@ void escolhasAdmin()
     printf("|              [4] Procurar por um usuario                                                           |\n");
     printf("|              [5] Cadastrar um novo administrador                                                   |\n");
     printf("|                                                                                                    |\n");
-    printf("|              [0] Sair                                                                              |\n");
+    printf("|              [0] Voltar ao Menu Principal                                                          |\n");
     printf("|                                                                                                    |\n");
     printf("======================================================================================================\n");
 }
@@ -158,7 +159,7 @@ void escolhasAdminErrada()
     printf("|              [4] Procurar por um usuario                                                           |\n");
     printf("|              [5] Cadastrar um novo administrador                                                   |\n");
     printf("|                                                                                                    |\n");
-    printf("|              [0] Sair                                                                              |\n");
+    printf("|              [0] Voltar ao Menu Principal                                                          |\n");
     printf("|                                                                                                    |\n");
     printf("======================================================================================================\n");
 }
@@ -648,22 +649,27 @@ void acessarAdmin()
 
             switch (opAdmin) {
                 case '1':
+                    // Listar Usuarios
                     printf("Opcao 1.\n");
                     break;
                 case '2':
+                    // Excluir uma conta
                     printf("Opcao 2\n");
                     break;
                 case '3':
+                    // Desativar uma conta
                     printf("Opcao 3.\n");
                     break;
                 case '4':
+                    // Procurar por um usuario
                     printf("Opcao 4\n");
                     break;
                 case '5':
+                    // Cadastrar um novo Administrador
                     printf("Opcao 5\n");
                     break;
                 case '0':
-                    printf("Voltando ao menu principal\n");
+                    printf("\n>> Voltando ao menu principal\n");
                     Sleep(2000); 
                     mainMenu();
                     return;
