@@ -228,8 +228,9 @@ void acessarConta(int *acessou)
 
         if (usuarioEncontrado)
         {
-            printf(">> Bem-vindo novamente, %s!\n\n", usuario.nomeUsuario);
+            printf(">> Bem-vindo novamente, %s! Voce sera redirecionado em instantes.\n\n", usuario.nomeUsuario);
             *acessou = 1;
+            Sleep(3000);
             break;
         }
         else
@@ -537,7 +538,7 @@ void acessarConvidado()
     printf("|                Seja vem vindo convidado! Voce sera redirecionado em instantes.                     |\n");
     printf("|                                                                                                    |\n");
     printf("======================================================================================================\n");
-    Sleep(3500);
+    Sleep(3000);
 }
 
 // Função que será usada para as escolhas do administrador.
