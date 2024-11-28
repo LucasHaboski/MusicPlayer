@@ -429,7 +429,7 @@ bool validarEmail(const char *email)
     {
         return false;
     } // Falta @ ou .
-    if (arrobaI < 5)
+    if (arrobaI < 3)
     {
         return false;
     } // Tem que ter pelo menos 5 caracters no nome do email
