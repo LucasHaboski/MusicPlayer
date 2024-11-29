@@ -14,40 +14,27 @@ typedef struct
     int idade;
     char nomeUsuario[50];
     char senha[30];
+    char status;
 } User;
 
 // Cabeçalho - Intro: será mostrada somente na primeira abertura do programa.
 void cabecalhoIntro()
 {
     printf("\033[H\033[J");
-    printf("======================================================================================================\n");
-    Sleep(100);
-    printf("|                                                                                                    |\n");
-    Sleep(100);
-    printf("|                                                                                   !                |\n");
-    Sleep(100);
-    printf("|                                                                                   |    |~/         |\n");
-    Sleep(100);
-    printf("|                                                                                   |   _|~          |\n");
-    Sleep(100);
-    printf("|                                                                     .============.|  (_|   |~/     |\n");
-    Sleep(100);
-    printf("|                                                                   .-;____________;|.      _|~      |\n");
-    Sleep(100);
-    printf("|      _____         _                                              | [_________I__] |     (_|       |\n");
-    Sleep(100);
-    printf("|     | ____|       | |                                             |  ''''' (_) (_) |               |\n");
-    Sleep(100);
-    printf("|     | |   ______  | |_ _   _ _ __   ___ ___                       | .=====..=====. |               |\n");
-    Sleep(100);
-    printf("|     | |  |______| | __| | | | '_ | / _ | __|                      | |:::::||:::::| |               |\n");
-    Sleep(100);
-    printf("|     | |___        | |_| |_| | | | |  __|__ |                      | '=====''=====' |               |\n");
-    Sleep(100);
-    printf("|     |_____|       |__||__,__|_| |_||___|___/                      '----------------'               |\n");
-    Sleep(100);
-    printf("|                                                                                                    |\n");
-    Sleep(100);
+    printf("======================================================================================================\n");Sleep(100);
+    printf("|                                                                                                    |\n");Sleep(100);
+    printf("|                                                                                   !                |\n");Sleep(100);
+    printf("|                                                                                   |    |~/         |\n");Sleep(100);
+    printf("|                                                                                   |   _|~          |\n");Sleep(100);
+    printf("|                                                                     .============.|  (_|   |~/     |\n");Sleep(100);
+    printf("|                                                                   .-;____________;|.      _|~      |\n");Sleep(100);
+    printf("|      _____         _                                              | [_________I__] |     (_|       |\n");Sleep(100);
+    printf("|     | ____|       | |                                             |  ''''' (_) (_) |               |\n");Sleep(100);
+    printf("|     | |   ______  | |_ _   _ _ __   ___ ___                       | .=====..=====. |               |\n");Sleep(100);
+    printf("|     | |  |______| | __| | | | '_ | / _ | __|                      | |:::::||:::::| |               |\n");Sleep(100);
+    printf("|     | |___        | |_| |_| | | | |  __|__ |                      | '=====''=====' |               |\n");Sleep(100);
+    printf("|     |_____|       |__||__,__|_| |_||___|___/                      '----------------'               |\n");Sleep(100);
+    printf("|                                                                                                    |\n");Sleep(100);
     printf("======================================================================================================\n");
     Sleep(200);
 }
@@ -219,6 +206,7 @@ void sobreAplicativo()
 
     } while (opcao != '0');
 }
+
 
 // Função que acessa uma conta já cadastrada.
 void acessarConta(int *acessou)
@@ -476,8 +464,7 @@ void cadastrarConta(User **vet, int *quantidade, int *capacidade)
 
         // Validação do Email
         bool validacaoEmail = true;
-        do
-        {
+        do{
             printf(">> Cadastro -> E-mail: ");
             scanf("%s", (*vet)[*quantidade].email);
             if ((*vet)[*quantidade].email[0] == '0')
@@ -495,11 +482,11 @@ void cadastrarConta(User **vet, int *quantidade, int *capacidade)
 
         printf(">> Cadastro -> Nome completo: ");
         fgets((*vet)[*quantidade].nomeCompleto, sizeof((*vet)[*quantidade].nomeCompleto), stdin);
+        (*vet)[*quantidade].nomeCompleto[strcspn((*vet)[*quantidade].nomeCompleto, "\n")] = '\0'; // Tirando a quebra de linha do fgets
 
         // Validação do CPF
         bool validacaoCPF = true;
-        do
-        {
+        do{
             printf(">> Cadastro -> CPF: ");
             scanf("%s", (*vet)[*quantidade].cpf);
 
@@ -509,7 +496,7 @@ void cadastrarConta(User **vet, int *quantidade, int *capacidade)
             {
                 printf(">> ERRO! CPF invalido. Tente novamente.\n");
             }
-        } while (!validacaoCPF);
+        }while (!validacaoCPF);
         getchar();
 
         // Validação de Idade
@@ -544,6 +531,8 @@ void cadastrarConta(User **vet, int *quantidade, int *capacidade)
             }
         } while (!validacaoSenha);
         getchar();
+
+        (*vet)[*quantidade].status = 'A';
 
         // Salva os dados de cada novo usuário no file usando a função fwrite();
         fwrite(&(*vet)[*quantidade], sizeof(User), 1, file);
@@ -610,6 +599,127 @@ void escolhasAdminErrada()
     printf("======================================================================================================\n");
 }
 
+// Função para listar todos os usuarios.
+void listarUsuarios(){
+    FILE *file = fopen("usuarios.dat", "rb");
+
+    if (file == NULL){
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    User user;
+    while (fread(&user, sizeof(User), 1, file) == 1) {
+        printf("\n| Nome: %s\n| Email: %s  |  CPF: %s   |  Idade: %d  |  Status: %c\n", user.nomeCompleto, user.email, user.cpf, user.idade, user.status);
+
+    }
+
+    fclose(file);
+}
+
+
+// Função para excluir um usuario.
+void excluirUsuario(char *cpf){
+    
+    FILE *file = fopen("usuarios.dat", "rb");
+    FILE *temp = fopen("temp.dat", "wb");
+
+    if (file == NULL || temp == NULL){
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    User user;
+    int encontrado = 0;
+
+    while (fread(&user, sizeof(User), 1, file)) {
+        if (strcmp(user.cpf, cpf) != 0) {
+            fwrite(&user, sizeof(User), 1, temp);
+        } else {
+            encontrado = 1;
+        }
+    }
+
+    fclose(file);
+    fclose(temp);
+
+    remove("usuarios.dat");
+    rename("temp.dat", "usuarios.dat");
+
+    if (encontrado) {
+        printf(">> Usuario com CPF %s foi excluido com sucesso.\n\n", cpf);
+    } else {
+        printf(">> Usuario com CPF %s nao encontrado.\n", cpf);
+    }
+}
+
+void desativarUsuario(char *cpf){
+
+    FILE *file = fopen("usuarios.dat", "rb");
+
+    if (file == NULL){
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    FILE *temp = fopen("usuarios_temp.dat", "wb");
+
+    if (temp == NULL) {
+        printf("Erro ao criar o arquivo temporário.\n");
+        fclose(file);
+        return;
+    }
+
+    User user;
+    int encontrado = 0;
+
+    while (fread(&user, sizeof(User), 1, file)) {
+        if (strcmp(user.cpf, cpf) == 0) {
+            encontrado = 1;
+            user.status = 'D'; // Muda o status para desativado
+        }
+
+        fwrite(&user, sizeof(User), 1, temp);
+    }
+
+    fclose(file);
+    fclose(temp);
+
+    if(encontrado){
+        remove("usuarios.dat");
+        rename("usuarios_temp.dat", "usuarios.dat");
+        printf(">> Usuario com CPF %s foi desativado com sucesso.\n\n", cpf);
+    } else {
+        remove("usuarios_temp.dat");
+        printf(">> Usuario com CPF %s nao encontrado.\n", cpf);
+    }    
+}
+
+void procurarUsuario(char *cpf){
+
+    FILE *file = fopen("usuarios.dat", "rb");
+    if(file == NULL){
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    User user;
+    int encontrado = 0;
+
+    while (fread(&user, sizeof(User), 1, file)) {
+        if (strcmp(user.cpf, cpf) == 0) {
+            printf("Usuario encontrado!\n");
+            printf("\n| Nome: %s\n| Email: %s  |  CPF: %s   |  Idade: %d  |  Status: %c\n", user.nomeCompleto, user.email, user.cpf, user.idade, user.status);
+            encontrado = 1;
+        }
+    }
+
+    fclose(file);
+
+    if(!encontrado){
+        printf(">> Usuario com CPF %s nao encontrado.\n", cpf);
+    }
+}
 // Função que acessa o programa como administrador.
 void acessarAdmin(int *adminAcessou)
 {
@@ -621,7 +731,7 @@ void acessarAdmin(int *adminAcessou)
     do
     {
         // Login -> E-mail e Senha
-        printf(">> Login -> E-mail: ");
+        printf("\n>> Login -> E-mail: ");
         scanf("%s", email);
         getchar();
 
@@ -637,6 +747,7 @@ void acessarAdmin(int *adminAcessou)
             Sleep(2000);
 
             char opAdmin = -1;
+            char cpf[12];
 
             escolhasAdmin();
 
@@ -645,27 +756,45 @@ void acessarAdmin(int *adminAcessou)
                 printf(">> ");
                 opAdmin = getch();
 
-                switch (opAdmin)
-                {
-                case '1':
-                    printf("Opcao 1 selecionada.\n");
-                    break;
-                case '2':
-                    printf("Opcao 2 selecionada.\n");
-                    break;
-                case '3':
-                    printf("Opcao 3 selecionada.\n");
-                    break;
-                case '4':
-                    printf("Opcao 4 selecionada.\n");
-                    break;
-                case '0':
-                    printf("Saindo...\n");
-                    Sleep(2000);
-                    return;
-                default:
-                    escolhasAdminErrada();
-                    break;
+                switch (opAdmin){
+                    case '1':
+                        listarUsuarios();
+                        printf("\n>> Precione qualquer tecla para sair: ");
+                        getch();
+                        escolhasAdmin();
+                        break;
+                    case '2':
+                        
+                        printf("\n>> Digite o CPF do usuario que deseja excluir: ");
+                        scanf("%s", cpf);
+                        excluirUsuario(cpf);
+                        printf("\n>> Precione qualquer tecla para sair: ");
+                        getch();
+                        escolhasAdmin();
+                        break;
+                    case '3':
+                        printf("\n>> Digite o CPF do usuario que deseja desativar: ");
+                        scanf("%s", cpf);
+                        desativarUsuario(cpf);
+                        printf("\n>> Precione qualquer tecla para sair: ");
+                        getch();
+                        escolhasAdmin();
+                        break;
+                    case '4':
+                        printf("\n>> Digite o CPF do usuario que deseja procurar: ");
+                        scanf("%s", cpf);
+                        procurarUsuario(cpf);
+                        printf("\n>> Precione qualquer tecla para sair: ");
+                        getch();
+                        escolhasAdmin();
+                        break;
+                    case '0':
+                        printf("Saindo...\n");
+                        Sleep(2000);
+                        return;
+                    default:
+                        escolhasAdminErrada();
+                        break;
                 }
             } while (opAdmin != '0');
 
