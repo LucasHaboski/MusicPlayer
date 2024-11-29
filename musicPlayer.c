@@ -610,13 +610,11 @@ void listarUsuarios(){
 
     User user;
     while (fread(&user, sizeof(User), 1, file) == 1) {
-        printf("\n| Nome: %s\n| Email: %s  |  CPF: %s   |  Idade: %d  |  Status: %c\n", user.nomeCompleto, user.email, user.cpf, user.idade, user.status);
-
+        printf("| Nome: %s\n| Email: %s  |  CPF: %s   |  Idade: %d  |  Status: %c\n\n", user.nomeCompleto, user.email, user.cpf, user.idade, user.status);
     }
 
     fclose(file);
 }
-
 
 // Função para excluir um usuario.
 void excluirUsuario(char *cpf){
@@ -647,7 +645,7 @@ void excluirUsuario(char *cpf){
     rename("temp.dat", "usuarios.dat");
 
     if (encontrado) {
-        printf(">> Usuario com CPF %s foi excluido com sucesso.\n\n", cpf);
+        printf(">> Usuario com CPF %s foi excluido com sucesso.\n", cpf);
     } else {
         printf(">> Usuario com CPF %s nao encontrado.\n", cpf);
     }
@@ -688,7 +686,7 @@ void desativarUsuario(char *cpf){
     if(encontrado){
         remove("usuarios.dat");
         rename("usuarios_temp.dat", "usuarios.dat");
-        printf(">> Usuario com CPF %s foi desativado com sucesso.\n\n", cpf);
+        printf(">> Usuario com CPF %s foi desativado com sucesso.\n", cpf);
     } else {
         remove("usuarios_temp.dat");
         printf(">> Usuario com CPF %s nao encontrado.\n", cpf);
@@ -731,7 +729,7 @@ void acessarAdmin(int *adminAcessou)
     do
     {
         // Login -> E-mail e Senha
-        printf("\n>> Login -> E-mail: ");
+        printf(">> Login -> E-mail: ");
         scanf("%s", email);
         getchar();
 
@@ -758,33 +756,40 @@ void acessarAdmin(int *adminAcessou)
 
                 switch (opAdmin){
                     case '1':
+                        system("cls");
+                        cabecalho();
                         listarUsuarios();
-                        printf("\n>> Precione qualquer tecla para sair: ");
+                        printf(">> Pressione qualquer tecla para sair: ");
                         getch();
                         escolhasAdmin();
                         break;
                     case '2':
-                        
-                        printf("\n>> Digite o CPF do usuario que deseja excluir: ");
+                        system("cls");
+                        cabecalho();
+                        printf(">> Digite o CPF do usuario que deseja excluir: ");
                         scanf("%s", cpf);
                         excluirUsuario(cpf);
-                        printf("\n>> Precione qualquer tecla para sair: ");
+                        printf("\n>> Pressione qualquer tecla para sair: ");
                         getch();
                         escolhasAdmin();
                         break;
                     case '3':
-                        printf("\n>> Digite o CPF do usuario que deseja desativar: ");
+                        system("cls");
+                        cabecalho();
+                        printf(">> Digite o CPF do usuario que deseja desativar: ");
                         scanf("%s", cpf);
                         desativarUsuario(cpf);
-                        printf("\n>> Precione qualquer tecla para sair: ");
+                        printf("\n>> Pressione qualquer tecla para sair: ");
                         getch();
                         escolhasAdmin();
                         break;
                     case '4':
-                        printf("\n>> Digite o CPF do usuario que deseja procurar: ");
+                        system("cls");
+                        cabecalho();
+                        printf(">> Digite o CPF do usuario que deseja procurar: ");
                         scanf("%s", cpf);
                         procurarUsuario(cpf);
-                        printf("\n>> Precione qualquer tecla para sair: ");
+                        printf("\n>> Pressione qualquer tecla para sair: ");
                         getch();
                         escolhasAdmin();
                         break;
@@ -803,8 +808,11 @@ void acessarAdmin(int *adminAcessou)
         else
         {
             printf(">> Acesso negado ao admin!\n\n");
-            printf(">> Aperte 0 para voltar ou qualquer outra tecla para tentar novamente: ");
+            printf(">> Aperte 0 para voltar ou qualquer outra tecla para tentar novamente:\n");
             opcao = getch();
+
+            system("cls");
+            cabecalho();
 
             if (opcao == '0')
             {
