@@ -14,41 +14,27 @@ typedef struct
     int idade;
     char nomeUsuario[50];
     char senha[30];
-    char  ativo;
+    char status;
 } User;
 
 // Cabeçalho - Intro: será mostrada somente na primeira abertura do programa.
 void cabecalhoIntro()
 {
     printf("\033[H\033[J");
-    printf("======================================================================================================\n");
-    Sleep(100);
-    printf("|                                                                                                    |\n");
-    Sleep(100);
-    printf("|                                                                                   !                |\n");
-    Sleep(100);
-    printf("|                                                                                   |    |~/         |\n");
-    Sleep(100);
-    printf("|                                                                                   |   _|~          |\n");
-    Sleep(100);
-    printf("|                                                                     .============.|  (_|   |~/     |\n");
-    Sleep(100);
-    printf("|                                                                   .-;____________;|.      _|~      |\n");
-    Sleep(100);
-    printf("|      _____         _                                              | [_________I__] |     (_|       |\n");
-    Sleep(100);
-    printf("|     | ____|       | |                                             |  ''''' (_) (_) |               |\n");
-    Sleep(100);
-    printf("|     | |   ______  | |_ _   _ _ __   ___ ___                       | .=====..=====. |               |\n");
-    Sleep(100);
-    printf("|     | |  |______| | __| | | | '_ | / _ | __|                      | |:::::||:::::| |               |\n");
-    Sleep(100);
-    printf("|     | |___        | |_| |_| | | | |  __|__ |                      | '=====''=====' |               |\n");
-    Sleep(100);
-    printf("|     |_____|       |__||__,__|_| |_||___|___/                      '----------------'               |\n");
-    Sleep(100);
-    printf("|                                                                                                    |\n");
-    Sleep(100);
+    printf("======================================================================================================\n");Sleep(100);
+    printf("|                                                                                                    |\n");Sleep(100);
+    printf("|                                                                                   !                |\n");Sleep(100);
+    printf("|                                                                                   |    |~/         |\n");Sleep(100);
+    printf("|                                                                                   |   _|~          |\n");Sleep(100);
+    printf("|                                                                     .============.|  (_|   |~/     |\n");Sleep(100);
+    printf("|                                                                   .-;____________;|.      _|~      |\n");Sleep(100);
+    printf("|      _____         _                                              | [_________I__] |     (_|       |\n");Sleep(100);
+    printf("|     | ____|       | |                                             |  ''''' (_) (_) |               |\n");Sleep(100);
+    printf("|     | |   ______  | |_ _   _ _ __   ___ ___                       | .=====..=====. |               |\n");Sleep(100);
+    printf("|     | |  |______| | __| | | | '_ | / _ | __|                      | |:::::||:::::| |               |\n");Sleep(100);
+    printf("|     | |___        | |_| |_| | | | |  __|__ |                      | '=====''=====' |               |\n");Sleep(100);
+    printf("|     |_____|       |__||__,__|_| |_||___|___/                      '----------------'               |\n");Sleep(100);
+    printf("|                                                                                                    |\n");Sleep(100);
     printf("======================================================================================================\n");
     Sleep(200);
 }
@@ -73,6 +59,41 @@ void cabecalho()
     printf("|                                                                                                    |\n");
     printf("======================================================================================================\n");
     Sleep(200);
+}
+
+// Cabecalho da parte interna do aplicativo.
+void cabecalhoParteInterna(){
+    cabecalho();
+    printf("|                                                                                                    |\n");
+    printf("|              Esta seria a parte interna do aplicativo, com a interface para tocar musicas          |\n");
+    printf("|                                                                                                    |\n");
+    printf("|             Aqui, a partir de uma biblioteca o usuario poderia escolher musicas e faze-las         |\n");
+    printf("|              tocar, tipo um player. Pretendemos expandir o projeto mais para frente, pois          |\n");
+    printf("|                  achar um jeito de fazer a musica tocar conforme a playlist do usuario             |\n");
+    printf("|                                   nao foi tao facil quanto pensamos.                               |\n");
+    printf("|                                                                                                    |\n");
+    printf("|                                   Aperte '0' para voltar para o menu                               |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+}
+
+// Parte interna do aplicativo.
+void parteInterna()
+{
+    cabecalhoParteInterna();
+    char opcao;
+
+    do
+    {
+        printf(">> ");
+        opcao = getch();
+
+        if (opcao != '0')
+        {
+            printf("Opcao invalida, tente novamente.\n");
+        }
+
+    } while (opcao != '0');
 }
 
 // Menu de escolhas será atualizado enquanto o usuário estiver navegando pelo menu inicial.
@@ -128,42 +149,6 @@ void nenhumaContaCadastrada()
     printf("======================================================================================================\n");
 }
 
-// Função que será usada para as escolhas do administrador.
-void escolhasAdmin()
-{
-    system("cls");
-    cabecalho();
-    printf("|                                                                                                    |\n");
-    printf("|              [1] Listar usuarios                                                                   |\n");
-    printf("|              [2] Excluir uma conta                                                                 |\n");
-    printf("|              [3] Desativar uma conta                                                               |\n");
-    printf("|              [4] Procurar por um usuario                                                           |\n");
-    printf("|              [5] Cadastrar um novo administrador                                                   |\n");
-    printf("|                                                                                                    |\n");
-    printf("|              [0] Voltar ao Menu Principal                                                          |\n");
-    printf("|                                                                                                    |\n");
-    printf("======================================================================================================\n");
-}
-
-// Para caso o admin escolha uma opção errada.
-void escolhasAdminErrada()
-{
-    system("cls");
-    cabecalho();
-    printf("|                                                                                                    |\n");
-    printf("|                    Voce selecionou uma opcao errada. Por favor, tente novamente!                   |\n");
-    printf("|                                                                                                    |\n");
-    printf("|              [1] Listar usuarios                                                                   |\n");
-    printf("|              [2] Excluir uma conta                                                                 |\n");
-    printf("|              [3] Desativar uma conta                                                               |\n");
-    printf("|              [4] Procurar por um usuario                                                           |\n");
-    printf("|              [5] Cadastrar um novo administrador                                                   |\n");
-    printf("|                                                                                                    |\n");
-    printf("|              [0] Voltar ao Menu Principal                                                          |\n");
-    printf("|                                                                                                    |\n");
-    printf("======================================================================================================\n");
-}
-
 // Caso o usuário digite a opção '0' no menu inicial o programa finaliza.
 void finalizarPrograma()
 {
@@ -186,8 +171,8 @@ void infoCadastro()
     printf("======================================================================================================\n");
 }
 
-void sobreAplicativo()
-{
+// Função que mostra o cabeçalho do menu sobre o aplicativo.
+void cabecalhoSobreAplicativo(){
     cabecalho();
     printf("|                                                                                                    |\n");
     printf("|               Bem-vindo ao nosso aplicativo CTunes, um Music Player inteiro em C!                  |\n");
@@ -198,68 +183,90 @@ void sobreAplicativo()
     printf("|        Nosso app permite que voce cadastre usuarios, crie playlists e curta suas musicas!          |\n");
     printf("|                                                                                                    |\n");
     printf("|                                                                                                    |\n");
-    printf("|                             Aperte (6) para voltar para o Menu                                     |\n");
+    printf("|                             Aperte (0) para voltar para o Menu                                     |\n");
     printf("|                                                                                                    |\n");
     printf("======================================================================================================\n");
-    Sleep(5000);
 }
 
-// Função que acessa uma conta já cadastrada.
-void acessarConta()
+// Menu sobre o aplicativo.
+void sobreAplicativo()
 {
-    // Abre o file 'usuarios.dat'
-    FILE *file = fopen("usuarios.dat", "rb");
+    cabecalhoSobreAplicativo();
+    char opcao;
 
-    // Caso não ache printa uma mensagem de erro na tela informando que nenhuma conta foi cadastrada ainda.
+    do
+    {
+        printf(">> ");
+        opcao = getch();
+
+        if (opcao != '0')
+        {
+            printf("Opcao invalida, tente novamente.\n");
+        }
+
+    } while (opcao != '0');
+}
+
+
+// Função que acessa uma conta já cadastrada.
+void acessarConta(int *acessou)
+{
+    FILE *file;
+    User usuario;
+    char email[100], senha[30];
+    bool usuarioEncontrado = false;
+
+    // Tenta abrir o arquivo binário com os usuários cadastrados.
+    file = fopen("usuarios.dat", "rb");
     if (!file)
     {
-        nenhumaContaCadastrada();
+        *acessou = 1;
         return;
     }
 
-    // Requerindo E-mail e Senha de acesso para o usuário.
-    User usuario;
-    char email[100], senha[30];
-
-    // Flag para validar se o usuario foi encontrado no file.
-    bool usuarioEncontrado = false;
-
-    cabecalho();
-
-    // Login -> E-mail e Senha
-    printf(">> Login -> E-mail: ");
-    scanf("%s", email);
-    getchar();
-
-    printf(">> Login -> Senha: ");
-    scanf("%s", senha);
-    getchar();
-
-    // Lê os dados do arquivo binário
-    while (fread(&usuario, sizeof(User), 1, file))
+    do
     {
+        // Cabeçalho do menu de login
+        cabecalho();
+        printf(">> Login -> E-mail: ");
+        scanf("%s", email);
+        getchar();
 
-        // Usando o 'strcmp' para comparar se o E-mail e a Senha do usuário são iguais aos que foram feitos na leitura.
-        if (strcmp(usuario.email, email) == 0 && strcmp(usuario.senha, senha) == 0)
+        printf(">> Login -> Senha: ");
+        scanf("%s", senha);
+        getchar();
+
+        // Procura pelo usuário no arquivo
+        usuarioEncontrado = false;
+        while (fread(&usuario, sizeof(User), 1, file))
         {
-            usuarioEncontrado = true;
+            if (strcmp(usuario.email, email) == 0 && strcmp(usuario.senha, senha) == 0)
+            {
+                usuarioEncontrado = true;
+                break;
+            }
+        }
+
+        fclose(file);
+
+        if (usuarioEncontrado)
+        {
+            printf(">> Bem-vindo novamente, %s! Voce sera redirecionado em instantes.\n\n", usuario.nomeUsuario);
+            *acessou = 2;
+            Sleep(3000);
             break;
         }
-    }
-
-    // Fecha o file.
-    fclose(file);
-
-    // Se o usuário e a senha forem encontrados, então uma mensagem de boas vindas aparece ao usuário.
-    if (usuarioEncontrado)
-    {
-        printf(">> Bem-vindo novamente, %s!\n\n", usuario.nomeUsuario);
-    }
-    // Caso contrário, uma mensagem de erro aparece e o usuário tem que tentar logar novamente.
-    else
-    {
-        printf(">> Email ou senha incorretos!\n\n");
-    }
+        else
+        {
+            printf(">> Email ou senha incorretos!\n\n");
+            printf(">> Aperte 0 para voltar ao menu ou qualquer outra tecla para tentar novamente.\n>> ");
+            char opcao = getch();
+            if (opcao == '0')
+            {
+                return;
+            }
+        }
+    } while (true);
 }
 
 // Validação de CPF
@@ -410,7 +417,7 @@ bool validarEmail(const char *email)
     {
         return false;
     } // Falta @ ou .
-    if (arrobaI < 5)
+    if (arrobaI < 3)
     {
         return false;
     } // Tem que ter pelo menos 5 caracters no nome do email
@@ -457,8 +464,7 @@ void cadastrarConta(User **vet, int *quantidade, int *capacidade)
 
         // Validação do Email
         bool validacaoEmail = true;
-        do
-        {
+        do{
             printf(">> Cadastro -> E-mail: ");
             scanf("%s", (*vet)[*quantidade].email);
             if ((*vet)[*quantidade].email[0] == '0')
@@ -476,11 +482,11 @@ void cadastrarConta(User **vet, int *quantidade, int *capacidade)
 
         printf(">> Cadastro -> Nome completo: ");
         fgets((*vet)[*quantidade].nomeCompleto, sizeof((*vet)[*quantidade].nomeCompleto), stdin);
+        (*vet)[*quantidade].nomeCompleto[strcspn((*vet)[*quantidade].nomeCompleto, "\n")] = '\0'; // Tirando a quebra de linha do fgets
 
         // Validação do CPF
         bool validacaoCPF = true;
-        do
-        {
+        do{
             printf(">> Cadastro -> CPF: ");
             scanf("%s", (*vet)[*quantidade].cpf);
 
@@ -490,7 +496,7 @@ void cadastrarConta(User **vet, int *quantidade, int *capacidade)
             {
                 printf(">> ERRO! CPF invalido. Tente novamente.\n");
             }
-        } while (!validacaoCPF);
+        }while (!validacaoCPF);
         getchar();
 
         // Validação de Idade
@@ -526,6 +532,8 @@ void cadastrarConta(User **vet, int *quantidade, int *capacidade)
         } while (!validacaoSenha);
         getchar();
 
+        (*vet)[*quantidade].status = 'A';
+
         // Salva os dados de cada novo usuário no file usando a função fwrite();
         fwrite(&(*vet)[*quantidade], sizeof(User), 1, file);
         printf("\n>> Conta criada com sucesso!");
@@ -541,6 +549,9 @@ void cadastrarConta(User **vet, int *quantidade, int *capacidade)
 
     // Fechamento do file.
     fclose(file);
+    
+    // Limpa a tela.
+    system("cls");
 }
 
 // Função que acessa o programa como convidado.
@@ -551,11 +562,273 @@ void acessarConvidado()
     printf("|                Seja vem vindo convidado! Voce sera redirecionado em instantes.                     |\n");
     printf("|                                                                                                    |\n");
     printf("======================================================================================================\n");
-    Sleep(3500);
+    Sleep(3000);
 }
 
-void mainMenu(){
+// Função que será usada para as escolhas do administrador.
+void escolhasAdmin()
+{
+    system("cls");
+    cabecalho();
+    printf("|                                                                                                    |\n");
+    printf("|              [1] Listar usuarios                                                                   |\n");
+    printf("|              [2] Excluir uma conta                                                                 |\n");
+    printf("|              [3] Desativar uma conta                                                               |\n");
+    printf("|              [4] Procurar por um usuario                                                           |\n");
+    printf("|                                                                                                    |\n");
+    printf("|              [0] Sair                                                                              |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+}
 
+// Para caso o admin escolha uma opção errada.
+void escolhasAdminErrada()
+{
+    system("cls");
+    cabecalho();
+    printf("|                                                                                                    |\n");
+    printf("|                    Voce selecionou uma opcao errada. Por favor, tente novamente!                   |\n");
+    printf("|                                                                                                    |\n");
+    printf("|              [1] Listar usuarios                                                                   |\n");
+    printf("|              [2] Excluir uma conta                                                                 |\n");
+    printf("|              [3] Desativar uma conta                                                               |\n");
+    printf("|              [4] Procurar por um usuario                                                           |\n");
+    printf("|                                                                                                    |\n");
+    printf("|              [0] Sair                                                                              |\n");
+    printf("|                                                                                                    |\n");
+    printf("======================================================================================================\n");
+}
+
+// Função para listar todos os usuarios.
+void listarUsuarios(){
+    FILE *file = fopen("usuarios.dat", "rb");
+
+    if (file == NULL){
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    User user;
+    while (fread(&user, sizeof(User), 1, file) == 1) {
+        printf("| Nome: %s\n| Email: %s  |  CPF: %s   |  Idade: %d  |  Status: %c\n\n", user.nomeCompleto, user.email, user.cpf, user.idade, user.status);
+    }
+
+    fclose(file);
+}
+
+// Função para excluir um usuario.
+void excluirUsuario(char *cpf){
+    
+    FILE *file = fopen("usuarios.dat", "rb");
+    FILE *temp = fopen("temp.dat", "wb");
+
+    if (file == NULL || temp == NULL){
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    User user;
+    int encontrado = 0;
+
+    while (fread(&user, sizeof(User), 1, file)) {
+        if (strcmp(user.cpf, cpf) != 0) {
+            fwrite(&user, sizeof(User), 1, temp);
+        } else {
+            encontrado = 1;
+        }
+    }
+
+    fclose(file);
+    fclose(temp);
+
+    remove("usuarios.dat");
+    rename("temp.dat", "usuarios.dat");
+
+    if (encontrado) {
+        printf(">> Usuario com CPF %s foi excluido com sucesso.\n", cpf);
+    } else {
+        printf(">> Usuario com CPF %s nao encontrado.\n", cpf);
+    }
+}
+
+void desativarUsuario(char *cpf){
+
+    FILE *file = fopen("usuarios.dat", "rb");
+
+    if (file == NULL){
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    FILE *temp = fopen("usuarios_temp.dat", "wb");
+
+    if (temp == NULL) {
+        printf("Erro ao criar o arquivo temporário.\n");
+        fclose(file);
+        return;
+    }
+
+    User user;
+    int encontrado = 0;
+
+    while (fread(&user, sizeof(User), 1, file)) {
+        if (strcmp(user.cpf, cpf) == 0) {
+            encontrado = 1;
+            user.status = 'D'; // Muda o status para desativado
+        }
+
+        fwrite(&user, sizeof(User), 1, temp);
+    }
+
+    fclose(file);
+    fclose(temp);
+
+    if(encontrado){
+        remove("usuarios.dat");
+        rename("usuarios_temp.dat", "usuarios.dat");
+        printf(">> Usuario com CPF %s foi desativado com sucesso.\n", cpf);
+    } else {
+        remove("usuarios_temp.dat");
+        printf(">> Usuario com CPF %s nao encontrado.\n", cpf);
+    }    
+}
+
+void procurarUsuario(char *cpf){
+
+    FILE *file = fopen("usuarios.dat", "rb");
+    if(file == NULL){
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    User user;
+    int encontrado = 0;
+
+    while (fread(&user, sizeof(User), 1, file)) {
+        if (strcmp(user.cpf, cpf) == 0) {
+            printf("Usuario encontrado!\n");
+            printf("\n| Nome: %s\n| Email: %s  |  CPF: %s   |  Idade: %d  |  Status: %c\n", user.nomeCompleto, user.email, user.cpf, user.idade, user.status);
+            encontrado = 1;
+        }
+    }
+
+    fclose(file);
+
+    if(!encontrado){
+        printf(">> Usuario com CPF %s nao encontrado.\n", cpf);
+    }
+}
+// Função que acessa o programa como administrador.
+void acessarAdmin(int *adminAcessou)
+{
+    char email[50], senha[25];
+    char opcao;
+
+    cabecalho();
+
+    do
+    {
+        // Login -> E-mail e Senha
+        printf(">> Login -> E-mail: ");
+        scanf("%s", email);
+        getchar();
+
+        printf(">> Login -> Senha: ");
+        scanf("%s", senha);
+        getchar();
+
+        // Valida o login do administrador
+        if (strcmp(email, "admin@ctunes.com") == 0 && strcmp(senha, "admin") == 0)
+        {
+            printf(">> Acesso garantido ao admin!\n");
+            *adminAcessou = 1;
+            Sleep(2000);
+
+            char opAdmin = -1;
+            char cpf[12];
+
+            escolhasAdmin();
+
+            do
+            {
+                printf(">> ");
+                opAdmin = getch();
+
+                switch (opAdmin){
+                    case '1':
+                        system("cls");
+                        cabecalho();
+                        listarUsuarios();
+                        printf(">> Pressione qualquer tecla para sair: ");
+                        getch();
+                        escolhasAdmin();
+                        break;
+                    case '2':
+                        system("cls");
+                        cabecalho();
+                        printf(">> Digite o CPF do usuario que deseja excluir: ");
+                        scanf("%s", cpf);
+                        excluirUsuario(cpf);
+                        printf("\n>> Pressione qualquer tecla para sair: ");
+                        getch();
+                        escolhasAdmin();
+                        break;
+                    case '3':
+                        system("cls");
+                        cabecalho();
+                        printf(">> Digite o CPF do usuario que deseja desativar: ");
+                        scanf("%s", cpf);
+                        desativarUsuario(cpf);
+                        printf("\n>> Pressione qualquer tecla para sair: ");
+                        getch();
+                        escolhasAdmin();
+                        break;
+                    case '4':
+                        system("cls");
+                        cabecalho();
+                        printf(">> Digite o CPF do usuario que deseja procurar: ");
+                        scanf("%s", cpf);
+                        procurarUsuario(cpf);
+                        printf("\n>> Pressione qualquer tecla para sair: ");
+                        getch();
+                        escolhasAdmin();
+                        break;
+                    case '0':
+                        printf("Saindo...\n");
+                        Sleep(2000);
+                        return;
+                    default:
+                        escolhasAdminErrada();
+                        break;
+                }
+            } while (opAdmin != '0');
+
+            return;
+        }
+        else
+        {
+            printf(">> Acesso negado ao admin!\n\n");
+            printf(">> Aperte 0 para voltar ou qualquer outra tecla para tentar novamente:\n");
+            opcao = getch();
+
+            system("cls");
+            cabecalho();
+
+            if (opcao == '0')
+            {
+                return;
+            }
+        }
+    } while (true);
+}
+
+// Parte principal do programa.
+int main()
+{
+
+    // Intro para quando o programa for aberto pela primeira vez e menu de escolha para o usuário.
+    cabecalhoIntro();
+    
     cabecalho();
     escolhas();
 
@@ -570,11 +843,9 @@ void mainMenu(){
 
     do
     {
-        // Pegando o input do usuário.
+        // Pegando a resposta do user sem precisar dar enter
         printf(">> ");
-        char opcao;
-
-        opcao = getch(); // Pegando resposta do user sem precisar dar enter
+        opcao = getch();
 
         // Switch-case para as opções disponíveis ao usuário.
         switch (opcao)
@@ -586,13 +857,24 @@ void mainMenu(){
 
         // Fazer o login.
         case '1':
-            acessarConta();
+            int acessou = 0;
+            acessarConta(&acessou);
+            if (acessou == 0)
+            {
+                cabecalho();
+                escolhas();
+            } else if (acessou == 1){
+                nenhumaContaCadastrada();
+            } else {
+                parteInterna();
+                cabecalho();
+                escolhas();
+            }
             break;
 
         // Criar uma nova conta.
         case '2':
             cadastrarConta(&vetUsers, &qnt, &capacidade);
-            system("cls");
             cabecalho();
             escolhas();
             break;
@@ -600,15 +882,27 @@ void mainMenu(){
         // Entrar como convidado.
         case '3':
             acessarConvidado();
+            parteInterna();
+            cabecalho();
+            escolhas();
             break;
 
         // Entrar como administrador.
         case '4':
-            acessarAdmin();
+            int adminAcessou = 0;
+            acessarAdmin(&adminAcessou);
+            if (adminAcessou == 0)
+            {
+                escolhasAdmin();
+            }
+            cabecalho();
+            escolhas();
             break;
 
         case '5':
             sobreAplicativo();
+            cabecalho();
+            escolhas();
             break;
 
         // Caso o usuário digite qualquer outra coisa que não esteja nas opções.
@@ -617,78 +911,6 @@ void mainMenu(){
             break;
         }
     } while (opcao != '0');
-    
-}
-
-// Função que acessa o programa como administrador.
-void acessarAdmin()
-{
-
-    char email[50], senha[25];
-
-    // Login -> E-mail e Senha
-    printf(">> Login -> E-mail: ");
-    scanf("%s", email);
-    getchar();
-
-    printf(">> Login -> Senha: ");
-    scanf("%s", senha);
-    getchar();
-
-    if (strcmp(email, "admin@ctunes.com") == 0 && strcmp(senha, "admin") == 0)
-    {
-        printf(">> Acesso garantido ao admin!");
-        Sleep(2500);
-        escolhasAdmin();
-
-        char opAdmin = -1;
-
-        while (opAdmin != '0') {
-            printf("\n>> Digite sua escolha: ");
-            opAdmin = getch();
-
-            switch (opAdmin) {
-                case '1':
-                    // Listar Usuarios
-                    printf("Opcao 1.\n");
-                    break;
-                case '2':
-                    // Excluir uma conta
-                    printf("Opcao 2\n");
-                    break;
-                case '3':
-                    // Desativar uma conta
-                    printf("Opcao 3.\n");
-                    break;
-                case '4':
-                    // Procurar por um usuario
-                    printf("Opcao 4\n");
-                    break;
-                case '5':
-                    // Cadastrar um novo Administrador
-                    printf("Opcao 5\n");
-                    break;
-                case '0':
-                    printf("\n>> Voltando ao menu principal\n");
-                    Sleep(2000); 
-                    mainMenu();
-                    return;
-                default:
-                    printf("Opcao invalida, tente novamente.\n");
-                    break;
-            }
-        }
-    }else{
-        printf(">> Acesso negado ao admin!");
-    }
-}
-
-int main()
-{
-
-    // Intro para quando o programa for aberto pela primeira vez e menu de escolha para o usuário.
-    cabecalhoIntro();
-    mainMenu();
 
     return 0;
 }
